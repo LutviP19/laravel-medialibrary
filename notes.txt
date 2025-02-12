@@ -1,0 +1,25 @@
+
+api-admin-all
+S0Mz2zQAaaRHPPc5Akj4PDBgH35e5ozjP34bGRxle80d00fe
+
+php artisan serve --port 8899
+
+{
+    "email" : "admin@example.com",
+    "password" : "password123",
+    "device_name" : "mobile"
+}
+
+{
+    "name" : "Test data",
+    "description" : "Description of test",
+    "image" : "http://localhost:4566/sample-bucket/image.jpg?AWSAccessKeyId=test&Signature=bO0naJ0IClTaTznV5cWNV5iqMe4%3D&Expires=1739254435"
+}
+
+
+How to kill ports in Ubuntu
+lsof -ti :8899
+kill $(lsof -ti :8899)
+// Forced
+kill -9 $(lsof -ti :8899)
+sudo kill -9 $(lsof -ti :8899)
