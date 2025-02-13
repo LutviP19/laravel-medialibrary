@@ -90,24 +90,29 @@ class TestingController extends Controller
         Gate::authorize('create', Testing::class);
 
         //
-        $url = $request->image;
         $testing = Testing::create($request->all());
-        $testing->addMediaFromUrl($url)
-            ->preservingOriginal()
-            ->sanitizingFileName(function($fileName) {
-                return strtolower(str_replace(['#', '/', '\\', ' '], '-', $fileName));
-            })
-            ->toMediaCollection($this->collection);
 
-        //return (new TestingResource($testing))->response();
+        // Add image
+        if($request->has('image')) {
+            $url = $request->image;
+            $testing->addMediaFromUrl($url)
+                ->preservingOriginal()
+                ->sanitizingFileName(function($fileName) {
+                    return strtolower(str_replace(['#', '/', '\\', ' '], '-', $fileName));
+                })
+                ->toMediaCollection($this->collection);
 
-        $data = Testing::findOrFail($testing->id);
-        $mediaItems = $data->getMedia($this->collection);
-        $data->image = $mediaItems->map(function($item) {
-            return $item->getUrl();
-        })->first();
+            $data = Testing::findOrFail($testing->id);
 
-        return (new TestingResource($data));
+            $mediaItems = $data->getMedia($this->collection);
+            $data->image = $mediaItems->map(function($item) {
+                return $item->getUrl();
+            })->first();
+    
+            return (new TestingResource($data))->response();
+        }
+
+        return (new TestingResource($testing))->response();
     }
 
     /**
