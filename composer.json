@@ -18,7 +18,9 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
         "livewire/volt": "^1.6",
-        "spatie/laravel-medialibrary": "^11.12"
+        "php-amqplib/php-amqplib": "^3.7",
+        "spatie/laravel-medialibrary": "^11.12",
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^14.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - 1025:1025 # SMTP
+      - 8025:8025 # UI
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.mailhog.entrypoints=mailhog-web"
+    #   - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
+    #   - "traefik.http.services.mailhog.loadbalancer.server.scheme=http"
+    networks:
+      - public
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+networks:
+  public:
+    name: traefik_default
+    external: true

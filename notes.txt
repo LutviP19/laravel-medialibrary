@@ -2,7 +2,13 @@
 api-admin-all
 S0Mz2zQAaaRHPPc5Akj4PDBgH35e5ozjP34bGRxle80d00fe
 
+npm run dev
 php artisan serve --port 8899
+
+Listen Jobs:
+------------
+php artisan queue:listen rabbitmq
+php artisan queue:listen redis
 
 {
     "email" : "admin@example.com",
@@ -23,3 +29,10 @@ kill $(lsof -ti :8899)
 // Forced
 kill -9 $(lsof -ti :8899)
 sudo kill -9 $(lsof -ti :8899)
+
+
+TODO:
+-----
+- RabbitMQ Queue
+- Notifications
+- Docker Compose(mailhog, redis, rabbitMQ, LocalStack)

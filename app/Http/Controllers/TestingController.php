@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\TestingResource;
 use App\Http\Resources\TestingCollection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TestingNotification;
 
 
 class TestingController extends Controller
@@ -91,6 +93,9 @@ class TestingController extends Controller
 
         //
         $testing = Testing::create($request->all());
+
+        // Notification -> sendNow | send
+        Notification::send($request->user(), new TestingNotification($testing));
 
         // Add image
         if($request->has('image')) {

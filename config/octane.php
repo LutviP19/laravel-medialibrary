@@ -132,6 +132,7 @@ return [
 
     'warm' => [
         ...Octane::defaultServicesToWarm(),
+        'rabbitmq',
     ],
 
     'flush' => [

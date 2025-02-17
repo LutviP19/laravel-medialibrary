@@ -1,9 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Jobs\ProcessRabbitMQMessage;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/send-message', function () {
+    ProcessRabbitMQMessage::dispatch('Test message');
+    
+    return 'Message sent to RabbitMQ!';
 });
 
 Route::middleware([
