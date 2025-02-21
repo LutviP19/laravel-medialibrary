@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Jobs\ProcessRabbitMQMessage;
+use App\Livewire\Pages\Chats;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,4 +22,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/chats', function () {
+        return view('livewire.pages.chats');
+    })->name('chats');
 });

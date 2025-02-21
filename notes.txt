@@ -36,3 +36,4 @@ TODO:
 - RabbitMQ Queue
 - Notifications
 - Docker Compose(mailhog, redis, rabbitMQ, LocalStack)
+- Broadcasting

@@ -4,12 +4,15 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Carbon;
+use Override;
 
 class User extends Authenticatable
 {
@@ -52,7 +55,26 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'profile',
     ];
+
+    /**
+     * Get the rooms for the user.
+     *
+     * @return HasMany<Room ,$this>
+     */
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(Room::class);
+    }
+
+    /**
+     * Get the user's profile image.
+     */
+    public function getProfileAttribute(): string
+    {
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
+    }
 
     /**
      * Get the attributes that should be cast.
