@@ -10,6 +10,14 @@ Listen Jobs:
 php artisan queue:listen rabbitmq
 php artisan queue:listen redis
 
+php artisan rabbitmq:consume
+
+Command:
+--------
+php artisan app:rabbitmq-producer-command "Testing message"
+php artisan app:rabbitmq-consumer-command
+
+
 {
     "email" : "admin@example.com",
     "password" : "password123",
@@ -37,3 +45,4 @@ TODO:
 - Notifications
 - Docker Compose(mailhog, redis, rabbitMQ, LocalStack)
 - Broadcasting
+- Command app

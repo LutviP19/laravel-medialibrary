@@ -6,7 +6,7 @@ use App\Livewire\Pages\Chats;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/send-message', function () {
     ProcessRabbitMQMessage::dispatch('Test message');
