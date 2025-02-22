@@ -26,16 +26,19 @@ class RabbitmqConsumerCommand extends Command
      */
     public function handle()
     {
+        $queueName = env('RABBITMQ_QUEUE');
+        // $queueName = 'rabbitmq';
+
         $connection = new AMQPStreamConnection(env('RABBITMQ_HOST'), env('RABBITMQ_PORT'), env('RABBITMQ_USER'), env('RABBITMQ_PASSWORD'));
         $channel = $connection->channel();
 
-        $channel->exchange_declare(env('RABBITMQ_QUEUE'), 'fanout', false, false, false);
+        $channel->exchange_declare($queueName, 'fanout', false, false, false);
 
         list($queue_name, ,) = $channel->queue_declare("", false, false, true, false);
 
-        $channel->queue_bind($queue_name, env('RABBITMQ_QUEUE'));
+        $channel->queue_bind($queue_name, $queueName);
 
-        echo " [*] Waiting for logs. To exit press CTRL+C\n";
+        echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
         $callback = function ($msg) {
             echo ' [x] ', $msg->getBody(), "\n";

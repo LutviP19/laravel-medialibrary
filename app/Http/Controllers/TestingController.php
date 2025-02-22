@@ -160,15 +160,15 @@ class TestingController extends Controller
             TestingUpdateEvent::dispatch($testing);
 
             // Notifications Megaphone
-            $url = url('/api/testing/'.$testing->id);
-            $notification = new \MBarlow\Megaphone\Types\Important(
-                'Updated Data', // Notification Title
-                'Data was changed: '. $testing->name . ' Updated at: '. $testing->updated_at, // Notification Body
-                $url, // Optional: URL. Megaphone will add a link to this URL within the Notification display.
-                'Read More...' // Optional: Link Text. The text that will be shown on the link button.
-            );
-            $user = auth()->user();
-            $user->notify($notification);
+            // $url = url('/api/testing/'.$testing->id);
+            // $notification = new \MBarlow\Megaphone\Types\Important(
+            //     'Updated Data', // Notification Title
+            //     'Data was changed: '. $testing->name . ' Updated at: '. $testing->updated_at, // Notification Body
+            //     $url, // Optional: URL. Megaphone will add a link to this URL within the Notification display.
+            //     'Read More...' // Optional: Link Text. The text that will be shown on the link button.
+            // );
+            // $user = auth()->user();
+            // $user->notify($notification);
 
             return new TestingResource($testing);
         } catch (ModelNotFoundException) {

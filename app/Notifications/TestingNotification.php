@@ -35,8 +35,21 @@ class TestingNotification extends Notification implements ShouldQueue
     public function viaConnections(): array
     {
         return [
-            'mail' => 'redis',
-            'database' => 'sync',
+            // 'mail' => 'redis',
+            // 'database' => 'sync',
+        ];
+    }
+
+    /**
+     * Determine which queues should be used for each notification channel.
+     *
+     * @return array<string, string>
+     */
+    public function viaQueues(): array
+    {
+        return [
+            'rabbitmq' => env('RABBITMQ_QUEUE'),
+            // 'slack' => 'slack-queue',
         ];
     }
 
@@ -47,7 +60,7 @@ class TestingNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -58,6 +71,7 @@ class TestingNotification extends Notification implements ShouldQueue
         $url = url('/api/testing/'.$this->testing->id);
  
         return (new MailMessage)
+                    ->subject('Testing Notification ' . $this->testing->id)
                     ->greeting('Hello!')
                     ->line($this->testing->name)
                     ->lineIf(strlen($this->testing->name) > 0, "{$this->testing->description}")

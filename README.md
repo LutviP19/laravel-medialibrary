@@ -1,66 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"><h2 align="center">11</h2></a></p>
+
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Laravel 11 implementations for starter kit web application. Development must be an enjoyable and creative experience to be truly fulfilling. Laravel media library is takes the pain out of starter kit development used in web projects, in this project is implemented several features of Laravel framework, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Simple, fast routing engine](https://laravel.com/docs/11.x/routing).
+- [Middleware](https://laravel.com/docs/11.x/middleware).
+- [Resource Controllers](https://laravel.com/docs/11.x/controllers#resource-controllers).
+- [Form Request Validation](https://laravel.com/docs/11.x/validation#form-request-validation).
+- [Error Handling](https://laravel.com/docs/11.x/errors).
+- [Writing Commands](https://laravel.com/docs/11.x/artisan#writing-commands).
+- [Eloquent: Relationships](https://laravel.com/docs/11.x/eloquent-relationships).
+- [Collections](https://laravel.com/docs/11.x/collections).
+- [Events](https://laravel.com/docs/11.x/events) with [Listeners](https://laravel.com/docs/11.x/events).
+- Database tools [schema migrations](https://laravel.com/docs/migrations).
+- [Queues](https://laravel.com/docs/11.x/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/11.x/broadcasting) with RabbitMQ or Redis driver.
+- Multiple dashboard with [jetstream](https://jetstream.laravel.com/introduction.html) and [filament](https://filamentphp.com/docs) builder.
+- Implement chat room application with [reverb](https://laravel.com/docs/11.x/reverb) and [livewire](https://livewire.laravel.com/docs/quickstart) template.
+- Implement Laravel [Octane](https://laravel.com/docs/11.x/octane) as web server.
+- Implement Laravel [Sail](https://laravel.com/docs/11.x/sail).
+- Include monitoring dashboard [Laravel Pulse](https://laravel.com/docs/11.x/pulse) and [Laravel Telescope](https://laravel.com/docs/11.x/telescope).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## How to run
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Follow this steps to run this project.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Install depedencies:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer install
+```
 
-## Laravel Sponsors
+```bash
+npm install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Build the project:
 
-### Premium Partners
+Modify env to correct database connections.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+php artisan migrate
+```
 
-## Contributing
+```bash
+npm run dev
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Run artisan server:
 
-## Code of Conduct
+```bash
+php artisan serve
+```
+OR
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Run octane server:
 
-## Security Vulnerabilities
+```bash
+php artisan octane:start --watch
+```
+OR
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Run with docker:
+
+```bash
+./vendor/bin/sail up
+```
+
+
+
+#### Compose docker container (REQUIRED):
+
+This step is required to support realtime apps, all docker-compose.yml is located on docker-compose directory:
+
+```bash
+cd docker-compose
+```
+
+mailhog (required)
+```bash
+cd mailhog
+docker-compose up
+```
+
+rabbitmq (required)
+```bash
+cd ../rabbitmq-python
+docker-compose up
+```
+
+redis (required)
+```bash
+cd ../redis
+docker-compose up
+```
+
+LocalStack (optional)
+```bash
+cd ../LocalStack
+docker-compose up
+```
+
+#### Url :
+View on browser [http://127.0.0.1:8000](http://127.0.0.1:8000), register new user or more to access the main dashboard.
+
+## Dashboard:
+
+Jetstream dashboard [http://127.0.0.1:8000/dashboard](http://127.0.0.1:8000/dashboard)
+
+Filament dashboard  [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+
+Pulse dashboard [http://127.0.0.1:8000/pulse](http://127.0.0.1:8000/pulse)
+
+Telescope dashboard [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
+
+API Resource Testing [http://127.0.0.1:8000/api/testing](http://127.0.0.1:8000/api/testing)
+
+Sample insert | update data.
+```json
+// New Data
+{
+    "name" : "Test data",
+    "description" : "Description of test",
+    "image" : "http://localhost:4566/sample-bucket/image.jpg?AWSAccessKeyId=test&Signature=bO0naJ0IClTaTznV5cWNV5iqMe4%3D&Expires=1739254435"
+}
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
