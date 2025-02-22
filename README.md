@@ -47,6 +47,9 @@ Build the project:
 Modify env to correct database connections.
 
 ```bash
+php artisan install:broadcasting
+php artisan telescope:install
+
 php artisan migrate
 ```
 
@@ -64,6 +67,7 @@ OR
 Run octane server:
 
 ```bash
+php artisan octane:install
 php artisan octane:start --watch
 ```
 OR
@@ -106,6 +110,15 @@ LocalStack (optional)
 ```bash
 cd ../LocalStack
 docker-compose up
+```
+
+#### Run services on separated terminals (REQUIRED):
+
+```bash
+php artisan reverb:start --debug
+php artisan queue:listen
+php artisan queue:listen redis
+php artisan rabbitmq:consume
 ```
 
 #### Url :
