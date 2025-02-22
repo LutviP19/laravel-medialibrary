@@ -13,10 +13,12 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Carbon;
 use Override;
+use MBarlow\Megaphone\HasMegaphone;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
+    use HasMegaphone;
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;

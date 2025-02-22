@@ -16,8 +16,12 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('chats')" :active="request()->routeIs('chats')" wire:navigate>
+                    <x-nav-link :href="route('chats')" :active="request()->routeIs('chats')">
                         {{ __('Chats') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('admin-notification')" :active="request()->routeIs('admin-notification')">
+                        {{ __('Admin Notification') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -124,7 +128,10 @@
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
-                    </x-dropdown>
+                    </x-dropdown>                    
+                </div>
+                <div class="ms-3 relative">
+                    <livewire:megaphone />
                 </div>
             </div>
 
@@ -149,6 +156,10 @@
 
             <x-responsive-nav-link href="{{ route('chats') }}" :active="request()->routeIs('chats')">
                 {{ __('Chats') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link href="{{ route('admin-notification') }}" :active="request()->routeIs('admin-notification')">
+                {{ __('Admin Notification') }}
             </x-responsive-nav-link>
 
         </div>

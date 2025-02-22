@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
         "livewire/volt": "^1.6",
+        "mbarlow/megaphone": "^2.0",
         "php-amqplib/php-amqplib": "^3.7",
         "spatie/laravel-medialibrary": "^11.12",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^14.1"

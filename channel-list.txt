@@ -1,0 +1,6 @@
+
+  App.Models.User.{id}       Closure .........................................................................
+  testings                   App\Broadcasting\TestingChannel .................................................
+
+                                                                                  Showing [2] private channels
+

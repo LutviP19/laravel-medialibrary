@@ -26,4 +26,8 @@ Route::middleware([
     Route::get('/chats', function () {
         return view('livewire.pages.chats');
     })->name('chats');
+
+    Route::get('/admin-notification', function () {
+        return view('livewire.pages.admin-notification');
+    })->name('admin-notification');
 });
