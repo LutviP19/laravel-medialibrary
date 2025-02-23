@@ -29,14 +29,14 @@ class TestingUpdateEvent implements ShouldBroadcastNow, ShouldDispatchAfterCommi
      *
      * @var string
      */
-    public $connection = 'rabbitmq'; //'redis';
+    public $connection = 'redis'; //'redis' | rabbitmq;
 
     /**
      * The name of the queue on which to place the broadcasting job.
      *
      * @var string
      */
-    public $queue = 'laravel-queue'; //'default';
+    public $queue = 'default'; //'default' | laravel-queue;
 
     /**
      * Create a new event instance.
@@ -57,7 +57,7 @@ class TestingUpdateEvent implements ShouldBroadcastNow, ShouldDispatchAfterCommi
     public function broadcastWith(): array
     {
         return [
-            'data' => $this->testing,
+            'testing' => $this->testing,
         ];
     }
 

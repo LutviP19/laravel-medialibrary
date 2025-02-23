@@ -127,6 +127,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'file' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/deprecation-warnings.log'),
+            'level' => 'debug',
+            'days' => 7,
+        ],
+
     ],
 
 ];

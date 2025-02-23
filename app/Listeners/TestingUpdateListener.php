@@ -3,11 +3,13 @@
 namespace App\Listeners;
 
 use App\Events\TestingUpdateEvent;
-use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
+use DateTime;
 use Throwable;
 
-class TestingUpdateListener implements ShouldQueueAfterCommit
+class TestingUpdateListener implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -16,14 +18,7 @@ class TestingUpdateListener implements ShouldQueueAfterCommit
      *
      * @var int
      */
-    public $tries = 3;
-
-    /**
-     * The number of seconds to wait before retrying the queued listener.
-     *
-     * @var int
-     */
-    public $backoff = 3;
+    public $tries = 5;
 
     /**
      * Create the event listener.
@@ -34,13 +29,11 @@ class TestingUpdateListener implements ShouldQueueAfterCommit
     }
 
     /**
-     * Calculate the number of seconds to wait before retrying the queued listener.
-     *
-     * @return array<int, int>
+     * Determine the time at which the listener should timeout.
      */
-    public function backoff(): array
+    public function retryUntil(): DateTime
     {
-        return [1, 5, 10];
+        return now()->addSeconds(10);
     }
 
     /**
@@ -48,7 +41,7 @@ class TestingUpdateListener implements ShouldQueueAfterCommit
      */
     public function viaConnection(): string
     {
-        return 'rabbitmq'; //'redis';
+        return 'redis'; //'redis' | rabbitmq;
     }
     
     /**
@@ -56,7 +49,7 @@ class TestingUpdateListener implements ShouldQueueAfterCommit
      */
     public function viaQueue(): string
     {
-        return env('RABBITMQ_QUEUE'); //'default';
+        return env('REDIS_QUEUE'); //env('REDIS_QUEUE') | env('RABBITMQ_QUEUE');
     }
     
     /**
@@ -65,7 +58,7 @@ class TestingUpdateListener implements ShouldQueueAfterCommit
     public function withDelay(TestingUpdateEvent $event): int
     {
         // return $event->highPriority ? 0 : 60;
-        return 10;
+        return 0;
     }
 
     /**
@@ -74,9 +67,10 @@ class TestingUpdateListener implements ShouldQueueAfterCommit
     public function handle(TestingUpdateEvent $event): void
     {
         //
-        // if (true) {
-        if (count($event->data) > 0) {
-            $this->release(30);
+        if ($event->testing && strlen($event->testing->name) > 0) {
+            Log::stack(['daily'])->info('TestingUpdateListener data: '. json_encode($event));
+            $this->delete();
+            Log::stack(['daily'])->info('TestingUpdateListener deleted.');
         }
     }
 
@@ -86,7 +80,7 @@ class TestingUpdateListener implements ShouldQueueAfterCommit
     public function shouldQueue(TestingUpdateEvent $event): bool
     {
         // return $event->data->subtotal >= 5000;
-        return false;
+        return true;
     }
 
     /**
@@ -94,6 +88,6 @@ class TestingUpdateListener implements ShouldQueueAfterCommit
      */
     public function failed(TestingUpdateEvent $event, Throwable $exception): void
     {
-        \Log::error('TestingUpdateListener failed: '.$exception->getMessage());
+        Log::stack(['daily'])->error('TestingUpdateListener failed: '.$exception->getMessage());
     }
 }
