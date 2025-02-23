@@ -5,7 +5,7 @@ S0Mz2zQAaaRHPPc5Akj4PDBgH35e5ozjP34bGRxle80d00fe
 Run Server:
 -----------
 npm run dev
-php artisan serve --port 8899
+php artisan serve
 php artisan octane:start --watch
 
 

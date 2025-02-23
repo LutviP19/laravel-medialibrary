@@ -14,7 +14,6 @@ class TestingCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
         return ['data' => $this->collection];
     }
 
@@ -28,9 +27,7 @@ class TestingCollection extends ResourceCollection
     public function with(Request $request): array    
     {
         return [
-            'meta' => [
-                'key' => 'value',
-            ],
+            'meta' => config('api-config.meta')
         ];
     }
 
@@ -39,6 +36,6 @@ class TestingCollection extends ResourceCollection
      */
     public function withResponse($request, $response): void
     {
-        $response->header('X-Value', env('APP_HEADER_CUSTOM_VALUE'));
+        $response->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
     }
 }

@@ -6,12 +6,14 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class TestingNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     protected $testing;
+    protected $notif_type;
 
 
     /**
@@ -21,10 +23,10 @@ class TestingNotification extends Notification implements ShouldQueue
     {
         //
         $this->testing = $testing;
+        $this->notif_type ='testing-notification';
         
-        $this->afterCommit();
-
         //dd($this->testing);
+        $this->afterCommit();
     }
 
     /**
@@ -60,7 +62,25 @@ class TestingNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['mail', 'database', 'broadcast'];
+    }
+
+    /**
+     * Get the notification's database type.
+     *
+     * @return string
+     */
+    public function databaseType(object $notifiable): string
+    {
+        return $this->notif_type;
+    }
+
+    /**
+     * Get the type of the notification being broadcast.
+     */
+    public function broadcastType(): string
+    {
+        return $this->notif_type;
     }
 
     /**
@@ -89,9 +109,25 @@ class TestingNotification extends Notification implements ShouldQueue
         return [
             //
             'notif_id' => $this->testing->id,
+            // 'user_id' => auth()->user()->id,
             'name' => $this->testing->name,
             'description' => $this->testing->description,
-            // 'image' => $this->testing->image,
+            'image' => $this->testing->image,
         ];
     }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     */
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'notif_id' => $this->testing->id,
+            'user_id' => auth()->user()->id,
+            'name' => $this->testing->name,
+            'description' => $this->testing->description,
+            'image' => $this->testing->image,
+        ]);
+    }
+
 }

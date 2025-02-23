@@ -1,100 +1,103 @@
 
    PASS  Tests\Unit\ExampleTest
-  ✓ that true is true                                                    0.03s  
+  ✓ that true is true                                                    0.02s  
 
    PASS  Tests\Feature\Api\TestingTest
-  ✓ example                                                              6.35s  
-  ✓ task list can be retrieved                                           0.33s  
-  ✓ task list can be show                                                0.09s  
-  ✓ task data can be created                                             0.09s  
-  ✓ task data can be updated                                             0.07s  
-  ✓ task data can be deleted                                             0.07s  
+  ✓ example                                                              1.12s  
+  ✓ task list can be retrieved                                           0.17s  
+  ✓ task list can be show                                                0.14s  
+  ✓ task data can be created                                             0.19s  
+  ✓ task data can be updated                                             0.21s  
+  ✓ task data can be deleted                                             0.06s  
 
    PASS  Tests\Feature\ApiTokenPermissionsTest
-  ✓ api token permissions can be updated                                 0.20s  
+  ✓ api token permissions can be updated                                 0.27s  
 
    PASS  Tests\Feature\AuthenticationTest
-  ✓ login screen can be rendered                                         0.07s  
+  ✓ login screen can be rendered                                         0.12s  
   ✓ users can authenticate using the login screen                        0.08s  
-  ✓ users cannot authenticate with invalid password                      0.07s  
+  ✓ users cannot authenticate with invalid password                      0.04s  
 
    PASS  Tests\Feature\BrowserSessionsTest
-  ✓ other browser sessions can be logged out                             0.07s  
+  ✓ other browser sessions can be logged out                             0.06s  
 
    PASS  Tests\Feature\CreateApiTokenTest
-  ✓ api tokens can be created                                            0.10s  
+  ✓ api tokens can be created                                            0.09s  
 
    PASS  Tests\Feature\CreateTeamTest
-  ✓ teams can be created                                                 0.08s  
+  ✓ teams can be created                                                 0.21s  
 
    PASS  Tests\Feature\DeleteAccountTest
   ✓ user accounts can be deleted                                         0.10s  
   ✓ correct password must be provided before account can be deleted      0.08s  
 
    PASS  Tests\Feature\DeleteApiTokenTest
-  ✓ api tokens can be deleted                                            0.08s  
+  ✓ api tokens can be deleted                                            0.06s  
 
    PASS  Tests\Feature\DeleteTeamTest
-  ✓ teams can be deleted                                                 0.13s  
-  ✓ personal teams cant be deleted                                       0.06s  
+  ✓ teams can be deleted                                                 0.06s  
+  ✓ personal teams cant be deleted                                       0.05s  
 
    WARN  Tests\Feature\EmailVerificationTest
-  - email verification screen can be rendered → Email verification not…  0.05s  
-  - email can be verified → Email verification not enabled.              0.02s  
+  - email verification screen can be rendered → Email verification not…  0.06s  
+  - email can be verified → Email verification not enabled.              0.03s  
   - email can not verified with invalid hash → Email verification not e… 0.03s  
 
    PASS  Tests\Feature\ExampleTest
   ✓ it returns a successful response                                     0.05s  
 
    PASS  Tests\Feature\InviteTeamMemberTest
-  ✓ team members can be invited to team                                  0.13s  
-  ✓ team member invitations can be cancelled                             0.11s  
+  ✓ team members can be invited to team                                  0.09s  
+  ✓ team member invitations can be cancelled                             0.06s  
 
    PASS  Tests\Feature\LeaveTeamTest
-  ✓ users can leave teams                                                0.08s  
-  ✓ team owners cant leave their own team                                0.10s  
+  ✓ users can leave teams                                                0.06s  
+  ✓ team owners cant leave their own team                                0.05s  
+
+   PASS  Tests\Feature\Livewire\CounterTest
+  ✓ it can render                                                        2.29s  
 
    PASS  Tests\Feature\PasswordConfirmationTest
-  ✓ confirm password screen can be rendered                              0.06s  
+  ✓ confirm password screen can be rendered                              0.12s  
   ✓ password can be confirmed                                            0.05s  
-  ✓ password is not confirmed with invalid password                      0.27s  
+  ✓ password is not confirmed with invalid password                      0.25s  
 
    PASS  Tests\Feature\PasswordResetTest
-  ✓ reset password link screen can be rendered                           0.05s  
-  ✓ reset password link can be requested                                 0.13s  
-  ✓ reset password screen can be rendered                                0.06s  
-  ✓ password can be reset with valid token                               0.07s  
+  ✓ reset password link screen can be rendered                           0.08s  
+  ✓ reset password link can be requested                                 0.23s  
+  ✓ reset password screen can be rendered                                0.11s  
+  ✓ password can be reset with valid token                               0.10s  
 
    PASS  Tests\Feature\ProfileInformationTest
-  ✓ current profile information is available                             0.06s  
-  ✓ profile information can be updated                                   0.06s  
+  ✓ current profile information is available                             0.07s  
+  ✓ profile information can be updated                                   0.11s  
 
    WARN  Tests\Feature\RegistrationTest
-  ✓ registration screen can be rendered                                  0.05s  
-  - registration screen cannot be rendered if support is disabled → Reg… 0.02s  
-  ✓ new users can register                                               0.05s  
+  ✓ registration screen can be rendered                                  0.07s  
+  - registration screen cannot be rendered if support is disabled → Reg… 0.06s  
+  ✓ new users can register                                               0.06s  
 
    PASS  Tests\Feature\RemoveTeamMemberTest
   ✓ team members can be removed from teams                               0.10s  
-  ✓ only team owner can remove team members                              0.08s  
+  ✓ only team owner can remove team members                              0.07s  
 
    PASS  Tests\Feature\TwoFactorAuthenticationSettingsTest
-  ✓ two factor authentication can be enabled                             0.33s  
-  ✓ recovery codes can be regenerated                                    0.13s  
-  ✓ two factor authentication can be disabled                            0.08s  
+  ✓ two factor authentication can be enabled                             0.25s  
+  ✓ recovery codes can be regenerated                                    0.30s  
+  ✓ two factor authentication can be disabled                            0.19s  
 
    PASS  Tests\Feature\UpdatePasswordTest
-  ✓ password can be updated                                              0.07s  
-  ✓ current password must be correct                                     0.07s  
-  ✓ new passwords must match                                             0.08s  
+  ✓ password can be updated                                              0.24s  
+  ✓ current password must be correct                                     0.18s  
+  ✓ new passwords must match                                             0.06s  
 
    PASS  Tests\Feature\UpdateTeamMemberRoleTest
-  ✓ team member roles can be updated                                     0.15s  
+  ✓ team member roles can be updated                                     0.10s  
   ✓ only team owner can update team member roles                         0.11s  
 
    PASS  Tests\Feature\UpdateTeamNameTest
-  ✓ team names can be updated                                            0.07s  
+  ✓ team names can be updated                                            0.17s  
 
-  Tests:    4 skipped, 46 passed (106 assertions)
-  Duration: 11.28s
+  Tests:    4 skipped, 47 passed (107 assertions)
+  Duration: 9.33s
 

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TestingNotification;
 use App\Events\TestingUpdateEvent;
+use App\Models\User;
 
 
 class TestingController extends Controller
@@ -23,11 +24,12 @@ class TestingController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth:api');
+        
     }
 
     public function test(Request $request)
     {
+        // Check if user has the right access
         if (!$request->user()->tokenCan('read')) {
             return response()->json([
                 'message' => 'This action is unauthorized.',
@@ -42,7 +44,7 @@ class TestingController extends Controller
             ]);
         }
 
-        //
+        // Default response
         $default = collect([
             'message' => 'TestingController is working',
             'status' => 'success',
@@ -59,6 +61,7 @@ class TestingController extends Controller
                     "update" => auth()->user()->tokenCan("update"),
                     "delete" => auth()->user()->tokenCan("delete")
             ],
+            'meta' => config('api-config.meta'),
         ]);
         $collection = $default->mergeRecursive((collect(['request' => $request->all()])));
         
@@ -73,7 +76,6 @@ class TestingController extends Controller
         Gate::authorize('viewAny', Testing::class);
 
         //
-        //return (new TestingCollection(Testing::all()));
         $data = Testing::all();
         $data->map(function($item) {
             $mediaItems = $item->getMedia($this->collection);
@@ -90,13 +92,40 @@ class TestingController extends Controller
      */
     public function store(StoreTestingRequest $request)
     {
-        Gate::authorize('create', Testing::class);
+        Gate::authorize('create', Testing::class);        
 
         //
         $testing = Testing::create($request->all());
 
-        // Notification -> sendNow | send
-        Notification::send($request->user(), new TestingNotification($testing));
+        // Receiver
+        $team_id = $request->user()->currentTeam->id ?? 21;
+        $users = User::where('current_team_id', $team_id)->get();
+        $user_count = $users->count();
+
+        foreach($users as $user) {
+            // Notification -> sendNow | send
+            if($user_count > 100) { // queue
+                Notification::send($user, new TestingNotification($testing));
+            }
+            else
+            Notification::sendNow($user, new TestingNotification($testing));
+        }
+
+        // Notifications Megaphone
+        $url = url('/api/testing/'.$testing->id);
+        $message = [
+            'title' => 'New Data',
+            'body' => sprintf('Data was created: %s Created at: %s', $testing->name, $testing->created_at),
+            'url' => $url,
+            'link' => 'Read More...',
+        ];
+        $notification = new \MBarlow\Megaphone\Types\Important(
+            $message['title'], $message['body'], $message['url'], $message['link']
+        );
+        
+        foreach($users as $user) {
+            // $user->notify($notification);
+        }
 
         // Add image
         if($request->has('image')) {
@@ -128,9 +157,7 @@ class TestingController extends Controller
     {
         Gate::authorize('view', $testing);
 
-        
-        // return (new TestingResource(Testing::findOrFail($testing->id)));
-
+        // 
         $data = Testing::findOrFail($testing->id);
         $mediaItems = $data->getMedia($this->collection);
         $data->image = $mediaItems->map(function($item) {
@@ -148,27 +175,35 @@ class TestingController extends Controller
         Gate::authorize('update', $testing);
 
         //
-        try {
-            //dd($album);
-            
+        try {            
             $testing->update([
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
 
+            // Receiver
+            $team_id = $request->user()->currentTeam->id ?? 21;
+            $users = User::where('current_team_id', $team_id)->get();
+            $user_count = $users->count();
+
             // Broadcast Event
             TestingUpdateEvent::dispatch($testing);
 
             // Notifications Megaphone
-            // $url = url('/api/testing/'.$testing->id);
-            // $notification = new \MBarlow\Megaphone\Types\Important(
-            //     'Updated Data', // Notification Title
-            //     'Data was changed: '. $testing->name . ' Updated at: '. $testing->updated_at, // Notification Body
-            //     $url, // Optional: URL. Megaphone will add a link to this URL within the Notification display.
-            //     'Read More...' // Optional: Link Text. The text that will be shown on the link button.
-            // );
-            // $user = auth()->user();
-            // $user->notify($notification);
+            $url = url('/api/testing/'.$testing->id);
+            $message = [
+                'title' => 'Updated Data',
+                'body' => sprintf('Data was changed: %s Updated at: %s', $testing->name, $testing->updated_at),
+                'url' => $url,
+                'link' => 'Read More...',
+            ];
+            $notification = new \MBarlow\Megaphone\Types\Important(
+                $message['title'], $message['body'], $message['url'], $message['link']
+            );
+            
+            foreach($users as $user) {
+                $user->notify($notification);
+            }
 
             return new TestingResource($testing);
         } catch (ModelNotFoundException) {
@@ -198,7 +233,9 @@ class TestingController extends Controller
         else {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Record ['.$title.'] cannot be deleted'
+                'message' => 'Record ['.$title.'] cannot be deleted',
+                'errors' => '500',
+                'exception' => 'QueryException'                
             ]);
         }
     }

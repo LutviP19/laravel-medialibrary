@@ -53,7 +53,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => 'Record not found.',
                     'errors' => '404',
                     //'exception' => $e->getMessage()
-                ], 404)->header('X-Value', env('APP_HEADER_CUSTOM_VALUE'));
+                ], 404)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
             }
         });
 
@@ -64,7 +64,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => $e->getMessage(),
                     'errors' => '401',
                     //'exception' => $e->getMessage()
-                ], 403)->header('X-Value', env('APP_HEADER_CUSTOM_VALUE'));
+                ], 403)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
             }
         });
 
@@ -75,7 +75,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => $e->getMessage(),
                     'errors' => '403',
                     //'exception' => $e->getMessage()
-                ], 403)->header('X-Value', env('APP_HEADER_CUSTOM_VALUE'));
+                ], 403)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
             }
         });
 
@@ -86,7 +86,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => 'Record not found.',
                     'errors' => '404',
                     //'exception' => $e->getMessage()
-                ], 404)->header('X-Value', env('APP_HEADER_CUSTOM_VALUE'));
+                ], 404)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
             }
         });
     })->create();

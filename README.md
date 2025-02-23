@@ -57,7 +57,7 @@ php artisan migrate
 npm run dev
 ```
 
-Run artisan server:
+Run artisan server (recomended):
 
 ```bash
 php artisan serve
@@ -112,28 +112,40 @@ cd ../LocalStack
 docker-compose up
 ```
 
+
 #### Run services on separated terminals (REQUIRED):
 
 ```bash
 php artisan reverb:start --debug
-php artisan queue:listen
-php artisan queue:listen redis
-php artisan rabbitmq:consume
+php artisan queue:listen rabbitmq --verbose
+php artisan queue:listen redis --verbose
 ```
 
-#### Url :
+Optional RabbitMQ cunsumer
+```bash
+php artisan rabbitmq:consume
+php artisan queue:listen
+```
+
+### Run test:
+
+```bash
+php artisan test > test-results.txt
+```
+open test-results.txt to view the results
+
+
+### Default Url :
 View on browser [http://127.0.0.1:8000](http://127.0.0.1:8000), register new user or more to access the main dashboard.
 
-## Dashboard:
+### Dashboard:
 
 Jetstream dashboard [http://127.0.0.1:8000/dashboard](http://127.0.0.1:8000/dashboard)
-
 Filament dashboard  [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
-
 Pulse dashboard [http://127.0.0.1:8000/pulse](http://127.0.0.1:8000/pulse)
-
 Telescope dashboard [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
 
+### API:
 API Resource Testing [http://127.0.0.1:8000/api/testing](http://127.0.0.1:8000/api/testing)
 
 Sample insert | update data.

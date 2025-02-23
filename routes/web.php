@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Jobs\ProcessRabbitMQMessage;
 use App\Livewire\Pages\Chats;
+use Livewire\Volt\Volt;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,4 +31,6 @@ Route::middleware([
     Route::get('/admin-notification', function () {
         return view('livewire.pages.admin-notification');
     })->name('admin-notification');
+
+    // Volt::route('/counter', 'counter');
 });

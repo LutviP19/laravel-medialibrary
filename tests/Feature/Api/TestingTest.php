@@ -27,7 +27,7 @@ test('task list can be retrieved', function () {
 
     // Assert response data
     $response->assertJsonStructure(['data' => [['id', 'name', 'description']]]);
-    $response->assertJsonPath('meta.key', 'value');
+    $response->assertJsonPath('meta.app', env('APP_NAME', 'Laravel'));
 });
 
 test('task list can be show', function () {
@@ -44,7 +44,7 @@ test('task list can be show', function () {
 
     // Assert response data
     $response->assertJsonStructure(['data' => ['id', 'name', 'description', 'can']]);
-    $response->assertJsonPath('meta.key', 'value');
+    $response->assertJsonPath('meta.app', env('APP_NAME', 'Laravel'));
 });
 
 test('task data can be created', function () {
@@ -60,7 +60,7 @@ test('task data can be created', function () {
 
     // Assert response data
     $response->assertJsonStructure(['data' => ['id', 'name', 'description']]);
-    $response->assertJsonPath('meta.key', 'value');
+    $response->assertJsonPath('meta.app', env('APP_NAME', 'Laravel'));
 });
 
 test('task data can be updated', function () {

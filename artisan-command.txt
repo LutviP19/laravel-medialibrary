@@ -157,6 +157,8 @@ Available commands:
   media-library:clean                   Clean deprecated conversions and files without related model.
   media-library:clear                   Delete all items in a media collection.
   media-library:regenerate              Regenerate the derived images of media
+ megaphone
+  megaphone:clear-announcements         Clear old read announcements
  migrate
   migrate:fresh                         Drop all tables and re-run all migrations
   migrate:install                       Create the migration repository

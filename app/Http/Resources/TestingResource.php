@@ -23,7 +23,6 @@ class TestingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
         return [
             "id" => $this->id,
             "name" => $this->name,
@@ -57,9 +56,7 @@ class TestingResource extends JsonResource
     public function with(Request $request): array    
     {
         return [
-            'meta' => [
-                'key' => 'value',
-            ],
+            'meta' => config('api-config.meta')
         ];
     }
 
@@ -68,6 +65,6 @@ class TestingResource extends JsonResource
      */
     public function withResponse($request, $response): void
     {
-        $response->header('X-Value', env('APP_HEADER_CUSTOM_VALUE'));
+        $response->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
     }
 }

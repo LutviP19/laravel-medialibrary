@@ -134,6 +134,13 @@ return [
             'days' => 7,
         ],
 
+        'deprecations' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/deprecation-warnings.log'),
+            'level' => 'debug',
+            'days' => 7,
+        ],
+
     ],
 
 ];

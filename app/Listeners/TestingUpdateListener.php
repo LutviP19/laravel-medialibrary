@@ -41,7 +41,7 @@ class TestingUpdateListener implements ShouldQueue
      */
     public function viaConnection(): string
     {
-        return 'redis'; //'redis' | rabbitmq;
+        return config('api-config.event_default.connection');
     }
     
     /**
@@ -49,7 +49,7 @@ class TestingUpdateListener implements ShouldQueue
      */
     public function viaQueue(): string
     {
-        return env('REDIS_QUEUE'); //env('REDIS_QUEUE') | env('RABBITMQ_QUEUE');
+        return config('api-config.event_default.queue');
     }
     
     /**
