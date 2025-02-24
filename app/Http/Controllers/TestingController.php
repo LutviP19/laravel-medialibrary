@@ -68,6 +68,16 @@ class TestingController extends Controller
         return response()->json($collection->all())->header('X-Value', env('APP_HEADER_CUSTOM_VALUE'));
     }
 
+    public function search(Request $request)
+    {
+        Gate::authorize('viewAny', Testing::class);
+
+        // Search
+        $data = Testing::search($request->q)->get();
+
+        return (new TestingCollection($data));
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -32,6 +32,9 @@ Command:
 php artisan app:rabbitmq-producer-command "Testing message"
 php artisan app:rabbitmq-consumer-command
 
+php artisan scout:sync-index-settings
+php artisan scout:import "App\Models\Testing"
+
 // New User
 {
     "email" : "admin@example.com",

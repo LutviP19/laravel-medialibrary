@@ -45,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Single action controller
     Route::get('/testing/test', [TestingController::class, 'test'])->name('testing.test');
+    Route::post('/testing/search', [TestingController::class, 'search'])->name('testing.search');
 
     // Resource controller
     Route::apiResources([

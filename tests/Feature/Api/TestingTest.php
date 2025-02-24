@@ -13,6 +13,39 @@ test('example', function () {
     $response->assertStatus(200);
 });
 
+test('task test can be retrieved', function () {
+    Sanctum::actingAs(
+        User::factory()->create(),
+        ['read']
+    );
+
+    Testing::factory(1)->create();
+ 
+    $response = $this->get('/api/testing/test');
+ 
+    $response->assertOk();
+
+    // Assert response data
+    $response->assertJson(['status' => 'success']);
+});
+
+test('task search can be retrieved', function () {
+    Sanctum::actingAs(
+        User::factory()->create(),
+        ['read']
+    );
+
+    Testing::factory(10)->create();
+ 
+    $response = $this->json('post', '/api/testing/search', ['q' => 'a'])->assertStatus(200);
+ 
+    $response->assertOk();
+
+    // Assert response data
+    $response->assertJsonStructure(['data' => [['id', 'name', 'description']]]);
+    $response->assertJsonPath('meta.app', env('APP_NAME', 'Laravel'));
+});
+
 test('task list can be retrieved', function () {
     Sanctum::actingAs(
         User::factory()->create(),

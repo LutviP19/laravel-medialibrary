@@ -19,8 +19,9 @@ Laravel 11 implementations for starter kit web application. Development must be 
 - [Collections](https://laravel.com/docs/11.x/collections).
 - [Events](https://laravel.com/docs/11.x/events) with [Listeners](https://laravel.com/docs/11.x/events).
 - Database tools [schema migrations](https://laravel.com/docs/migrations).
-- [Queues](https://laravel.com/docs/11.x/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/11.x/broadcasting) with RabbitMQ or Redis driver.
+- [Queues](https://laravel.com/docs/11.x/queues) with RabbitMQ or Redis driver.
+- [Real-time event broadcasting](https://laravel.com/docs/11.x/broadcasting) with [Reverb](https://laravel.com/docs/11.x/reverb).
+- Searching with [Scout](https://laravel.com/docs/11.x/scout) using [Meilisearch](https://www.meilisearch.com/docs) driver.
 - Multiple dashboard with [jetstream](https://jetstream.laravel.com/introduction.html) and [filament](https://filamentphp.com/docs) builder.
 - Implement chat room application with [reverb](https://laravel.com/docs/11.x/reverb) and [livewire](https://livewire.laravel.com/docs/quickstart) template.
 - Implement Laravel [Octane](https://laravel.com/docs/11.x/octane) as web server.
