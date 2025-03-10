@@ -5,7 +5,7 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     restart: unless-stopped
-    command:
+    #command:
     # labels:
     #   - "traefik.enable=true"
     #   - "traefik.tcp.routers.db.entrypoints=redis"
