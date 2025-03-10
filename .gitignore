@@ -3,7 +3,7 @@
 /public/build
 /public/hot
 /public/storage
-/public/media
+/public/media/*
 /storage/*.key
 /storage/pail
 /vendor
@@ -22,4 +22,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-docker-compose/redis/redis/dump.rdb
+docker-compose/redis/redis
+docker-compose/mailpit/data
