@@ -48,6 +48,7 @@ Build the project:
 Modify env to correct database connections.
 
 ```bash
+php artisan install:api
 php artisan install:broadcasting
 php artisan telescope:install
 
@@ -89,9 +90,9 @@ This step is required to support realtime apps, all docker-compose.yml is locate
 cd docker-compose
 ```
 
-mailhog (required)
+mailpit (required)
 ```bash
-cd mailhog
+cd mailpit
 docker-compose up
 ```
 
@@ -122,10 +123,26 @@ php artisan queue:listen rabbitmq --verbose
 php artisan queue:listen redis --verbose
 ```
 
-Optional RabbitMQ cunsumer
+#### Optional RabbitMQ cunsumer
 ```bash
 php artisan rabbitmq:consume
 php artisan queue:listen
+```
+
+#### Run seeder (OPTIONAL):
+```bash
+php artisan db:seed --class=TestingSeeder
+```
+
+#### Linking storage (REQUIRED):
+```bash
+php artisan storage:link
+```
+
+#### Sync Scout(REQUIRED):
+```bash
+php artisan scout:sync-index-settings
+php artisan scout:import "App\Models\Testing"
 ```
 
 ### Run test:
@@ -151,11 +168,11 @@ API Resource Testing [http://127.0.0.1:8000/api/testing](http://127.0.0.1:8000/a
 
 Sample insert | update data.
 ```json
-// New Data
+// Sample Data
 {
     "name" : "Test data",
     "description" : "Description of test",
-    "image" : "http://localhost:4566/sample-bucket/image.jpg?AWSAccessKeyId=test&Signature=bO0naJ0IClTaTznV5cWNV5iqMe4%3D&Expires=1739254435"
+    "image": "http://127.0.0.1:8000/media/1/image.jpg"
 }
 ```
 

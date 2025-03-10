@@ -14,6 +14,7 @@
         <!-- Scripts -->
         <script>
             window.userId = {{ auth()->id() }};
+            window.teamId = {{ auth()->user()->currentTeam->id }};
         </script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 

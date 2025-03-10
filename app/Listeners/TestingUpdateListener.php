@@ -67,7 +67,7 @@ class TestingUpdateListener implements ShouldQueue
     public function handle(TestingUpdateEvent $event): void
     {
         //
-        if ($event->testing && strlen($event->testing->name) > 0) {
+        if ($event->testing && $event->testing->users_count > 0) {
             Log::stack(['daily'])->info('TestingUpdateListener data: '. json_encode($event));
             $this->delete();
             Log::stack(['daily'])->info('TestingUpdateListener deleted.');
@@ -79,8 +79,8 @@ class TestingUpdateListener implements ShouldQueue
      */
     public function shouldQueue(TestingUpdateEvent $event): bool
     {
-        // return $event->data->subtotal >= 5000;
-        return true;
+        return $event->testing->users_count >= 50;
+        // return false;
     }
 
     /**

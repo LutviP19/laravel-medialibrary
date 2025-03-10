@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Testing;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTestingRequest;
 use App\Http\Requests\UpdateTestingRequest;
-use App\Models\Testing;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 //use Illuminate\Auth\Access\Response;
 use App\Http\Resources\TestingResource;
 use App\Http\Resources\TestingCollection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\TestingNotification;
-use App\Events\TestingUpdateEvent;
-use App\Models\User;
 
 
 class TestingController extends Controller
@@ -104,41 +101,12 @@ class TestingController extends Controller
     {
         Gate::authorize('create', Testing::class);        
 
-        //
-        $testing = Testing::create($request->all());
-
-        // Receiver
-        $team_id = $request->user()->currentTeam->id ?? 21;
-        $users = User::where('current_team_id', $team_id)->get();
-        $user_count = $users->count();
-
-        foreach($users as $user) {
-            // Notification -> sendNow | send
-            if($user_count > 100) { // queue
-                Notification::send($user, new TestingNotification($testing));
-            }
-            else
-            Notification::sendNow($user, new TestingNotification($testing));
-        }
-
-        // Notifications Megaphone
-        $url = url('/api/testing/'.$testing->id);
-        $message = [
-            'title' => 'New Data',
-            'body' => sprintf('Data was created: %s Created at: %s', $testing->name, $testing->created_at),
-            'url' => $url,
-            'link' => 'Read More...',
-        ];
-        $notification = new \MBarlow\Megaphone\Types\Important(
-            $message['title'], $message['body'], $message['url'], $message['link']
-        );
-        
-        foreach($users as $user) {
-            // $user->notify($notification);
-        }
+        // Get Validated data
+        $validated = $request->validated();
+        $testing = Testing::create($validated);
 
         // Add image
-        if($request->has('image')) {
+        if($request->filled('image')) {
             $url = $request->image;
             $testing->addMediaFromUrl($url)
                 ->preservingOriginal()
@@ -147,14 +115,12 @@ class TestingController extends Controller
                 })
                 ->toMediaCollection($this->collection);
 
-            $data = Testing::findOrFail($testing->id);
-
-            $mediaItems = $data->getMedia($this->collection);
-            $data->image = $mediaItems->map(function($item) {
+            $mediaItems = $testing->getMedia($this->collection);
+            $testing->image = $mediaItems->map(function($item) {
                 return $item->getUrl();
             })->first();
     
-            return (new TestingResource($data))->response();
+            return (new TestingResource($testing))->response();
         }
 
         return (new TestingResource($testing))->response();
@@ -189,31 +155,7 @@ class TestingController extends Controller
             $testing->update([
                 'name' => $request->name,
                 'description' => $request->description,
-            ]);
-
-            // Receiver
-            $team_id = $request->user()->currentTeam->id ?? 21;
-            $users = User::where('current_team_id', $team_id)->get();
-            $user_count = $users->count();
-
-            // Broadcast Event
-            TestingUpdateEvent::dispatch($testing);
-
-            // Notifications Megaphone
-            $url = url('/api/testing/'.$testing->id);
-            $message = [
-                'title' => 'Updated Data',
-                'body' => sprintf('Data was changed: %s Updated at: %s', $testing->name, $testing->updated_at),
-                'url' => $url,
-                'link' => 'Read More...',
-            ];
-            $notification = new \MBarlow\Megaphone\Types\Important(
-                $message['title'], $message['body'], $message['url'], $message['link']
-            );
-            
-            foreach($users as $user) {
-                $user->notify($notification);
-            }
+            ]);            
 
             return new TestingResource($testing);
         } catch (ModelNotFoundException) {

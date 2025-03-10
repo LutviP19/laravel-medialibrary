@@ -71,11 +71,11 @@ return [
 
         'apps' => [
             [
-                'key' => env('REVERB_APP_KEY', 'my-app-key'),
-                'secret' => env('REVERB_APP_SECRET', 'my-app-secret'),
-                'app_id' => env('REVERB_APP_ID', 'my-app-id'),
+                'key' => env('REVERB_APP_KEY'),
+                'secret' => env('REVERB_APP_SECRET'),
+                'app_id' => env('REVERB_APP_ID'),
                 'options' => [
-                    'host' => env('REVERB_HOST', '127.0.0.1'),
+                    'host' => env('REVERB_HOST'),
                     'port' => env('REVERB_PORT', 443),
                     'scheme' => env('REVERB_SCHEME', 'https'),
                     'useTLS' => env('REVERB_SCHEME', 'https') === 'https',

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Testing;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,5 +14,6 @@ class TestingSeeder extends Seeder
     public function run(): void
     {
         //
+        Testing::factory(50)->create();
     }
 }

@@ -47,6 +47,7 @@ class TestingUpdateEvent implements ShouldBroadcastNow, ShouldDispatchAfterCommi
     {
         //
         $this->testing = $testing;
+        // dd($this->testing);
 
         // Set the connection and queue to use for broadcasting.
         $this->connection = config('api-config.event_default.connection');

@@ -1,6 +1,6 @@
 
 api-admin-all
-S0Mz2zQAaaRHPPc5Akj4PDBgH35e5ozjP34bGRxle80d00fe
+24THBCnd33NFyG4pCabDcVmfWpLpgJoAN2m6zVjY39539c46
 
 Run Server:
 -----------
@@ -14,6 +14,22 @@ Services:
 php artisan reverb:start --debug
 php artisan queue:listen
 php artisan rabbitmq:consume
+
+Debug:
+------
+php artisan reverb:start --debug
+php artisan queue:listen rabbitmq --verbose
+php artisan queue:listen redis --verbose
+php artisan queue:work --verbose
+
+
+DB Seed:
+php artisan db:seed --class=TestingSeeder
+
+Snyc Scout:
+php artisan scout:sync-index-settings
+scout:import "App\Models\Testing"
+
 
 
 List Channels:

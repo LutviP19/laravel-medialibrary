@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\TestingObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -13,6 +15,7 @@ use Laravel\Scout\Engines\Engine;
 use Laravel\Scout\EngineManager;
 use Laravel\Scout\Searchable;
 
+#[ObservedBy([TestingObserver::class])]
 class Testing extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\TestingFactory> */

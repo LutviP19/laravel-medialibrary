@@ -8,6 +8,12 @@ Echo.private('App.Models.User.' + userId)
         console.log(notification);
 });
 
+console.log( window.teamId );
+Echo.private('App.Models.UserTeam.' + teamId)
+    .notification((notification) => {
+        console.log(notification);
+});
+
 // Broadcasting Channels
 Echo.channel(`testings`)
     .listen('TestingUpdateEvent', (e) => {
