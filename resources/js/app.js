@@ -8,7 +8,7 @@ Echo.private('App.Models.User.' + userId)
         console.log(notification);
 });
 
-console.log( window.teamId );
+// console.log( window.teamId );
 Echo.private('App.Models.UserTeam.' + teamId)
     .notification((notification) => {
         console.log(notification);

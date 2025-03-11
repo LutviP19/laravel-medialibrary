@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTestingRequest extends FormRequest
+class UpdateAlbumRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true ?? $this->user()->tokenCan("update");
+        return true;
     }
 
     /**
@@ -21,11 +21,10 @@ class UpdateTestingRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('testing')->id;
+        $id = $this->route('album')->id;
         return [
-            'name' => 'required|unique:testings,name,'.$id.',id',
+            'name' => 'required|unique:albums,name,'.$id.',id',
             'description' => 'required',
-            'image' => 'url',
         ];
     }
 }

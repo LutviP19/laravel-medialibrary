@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+// use App\Models\User;
 use App\Models\Testing;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTestingRequest;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Gate;
 //use Illuminate\Auth\Access\Response;
 use App\Http\Resources\TestingResource;
 use App\Http\Resources\TestingCollection;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
 
 
 class TestingController extends Controller

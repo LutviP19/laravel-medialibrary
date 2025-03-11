@@ -5,6 +5,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\TestingController;
+use App\Http\Controllers\AlbumController;
 
 Route::get('/user', function (Request $request) {
     return [
@@ -47,9 +48,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/testing/test', [TestingController::class, 'test'])->name('testing.test');
     Route::post('/testing/search', [TestingController::class, 'search'])->name('testing.search');
 
+    // Album
+    Route::post('/album/search', [AlbumController::class, 'search'])->name('album.search');
+
     // Resource controller
     Route::apiResources([
         'testing' => TestingController::class,
+    ]);
+    Route::apiResources([
+        'album' => AlbumController::class,
     ]);
     
 });

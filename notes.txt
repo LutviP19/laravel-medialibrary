@@ -6,29 +6,32 @@ Run Server:
 -----------
 npm run dev
 php artisan serve
+composer run dev
 php artisan octane:start --watch
 
 
 Services:
 ---------
-php artisan reverb:start --debug
+php artisan reverb:start
 php artisan queue:listen
 php artisan rabbitmq:consume
 
 Debug:
 ------
 php artisan reverb:start --debug
-php artisan queue:listen rabbitmq --verbose
 php artisan queue:listen redis --verbose
+php artisan queue:listen rabbitmq --verbose
 php artisan queue:work --verbose
 
 
 DB Seed:
 php artisan db:seed --class=TestingSeeder
+php artisan db:seed --class=AlbumSeeder
+php artisan db:seed --class=MediaLibrarySeeder
 
 Snyc Scout:
 php artisan scout:sync-index-settings
-scout:import "App\Models\Testing"
+php artisan scout:import "App\Models\Testing"
 
 
 
@@ -79,7 +82,7 @@ Docker-Compose:
 ---------------
 cd docker-compose/
     LocalStack
-    mailhog
+    mailpit
     rabbitmq-python
     redis
 docker-compose up
@@ -94,3 +97,6 @@ TODO:
 - Command app
 - Broadcasting Channels
 - Push Notification
+- Octane Server
+- ULID with Soft Delete
+- Media Library Apps

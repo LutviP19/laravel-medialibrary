@@ -71,6 +71,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the rooms for the user.
+     *
+     * @return HasMany<Album ,$this>
+     */
+    public function albums(): HasMany
+    {
+        return $this->HasMany(Album::class, 'user_ulid', 'ulid');
+    }
+
+    /**
+     * Get the rooms for the user.
+     *
+     * @return HasMany<MediaLibrary ,$this>
+     */
+    public function medias(): HasMany
+    {
+        return $this->HasMany(MediaLibrary::class, 'user_ulid', 'ulid');
+    }
+
+    /**
      * Get the user's profile image.
      */
     public function getProfileAttribute(): string
