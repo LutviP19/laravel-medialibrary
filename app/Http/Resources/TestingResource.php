@@ -23,11 +23,16 @@ class TestingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Get Medias
+        $mediaCollections = 'collection-testing';
+        $mediaItems = $this->getMedia($mediaCollections);
+        $image = isset($mediaItems[0]) ? $mediaItems[0]->getFullUrl() : null;
+
         return [
             "id" => $this->id,
             "name" => $this->name,
             "description" => $this->description,
-            "image" => $this->image,
+            "image" => $image,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
             $this->mergeWhen(

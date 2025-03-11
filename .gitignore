@@ -22,5 +22,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-docker-compose/redis/redis
-docker-compose/mailpit/data
+docker-compose/redis/redis/*
+docker-compose/mailpit/data/*

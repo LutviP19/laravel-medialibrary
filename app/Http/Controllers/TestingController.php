@@ -84,12 +84,6 @@ class TestingController extends Controller
 
         //
         $data = Testing::all();
-        $data->map(function($item) {
-            $mediaItems = $item->getMedia($this->collection);
-            $item->image = $mediaItems->map(function($item) {
-                return $item->getUrl();
-            })->first();
-        });
 
         return (new TestingCollection($data));
     }
@@ -114,13 +108,6 @@ class TestingController extends Controller
                     return strtolower(str_replace(['#', '/', '\\', ' '], '-', $fileName));
                 })
                 ->toMediaCollection($this->collection);
-
-            $mediaItems = $testing->getMedia($this->collection);
-            $testing->image = $mediaItems->map(function($item) {
-                return $item->getUrl();
-            })->first();
-    
-            return (new TestingResource($testing))->response();
         }
 
         return (new TestingResource($testing))->response();
@@ -135,10 +122,6 @@ class TestingController extends Controller
 
         // 
         $data = Testing::findOrFail($testing->id);
-        $mediaItems = $data->getMedia($this->collection);
-        $data->image = $mediaItems->map(function($item) {
-            return $item->getUrl();
-        })->first();
 
         return (new TestingResource($data));
     }
@@ -151,11 +134,33 @@ class TestingController extends Controller
         Gate::authorize('update', $testing);
 
         //
-        try {            
+        try {
             $testing->update([
                 'name' => $request->name,
                 'description' => $request->description,
-            ]);            
+            ]);
+
+            // Update image
+            $id = $testing->id;
+            if($request->filled('image')) {
+                // Delete old media
+                $mediaItems = $testing->getMedia($this->collection);
+                if(isset($mediaItems[0])) {
+                    $mediaItems[0]->delete();
+                }
+
+                // Generate new model
+                $data = Testing::findOrFail($id);
+                $url = $request->image;
+                $data->addMediaFromUrl($url)
+                    ->preservingOriginal()
+                    ->sanitizingFileName(function($fileName) {
+                        return strtolower(str_replace(['#', '/', '\\', ' '], '-', $fileName));
+                    })
+                    ->toMediaCollection($this->collection);
+                
+                return new TestingResource($data);
+            }
 
             return new TestingResource($testing);
         } catch (ModelNotFoundException) {
