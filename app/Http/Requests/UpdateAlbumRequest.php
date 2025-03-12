@@ -11,7 +11,7 @@ class UpdateAlbumRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->tokenCan("update");
     }
 
     /**
@@ -23,8 +23,10 @@ class UpdateAlbumRequest extends FormRequest
     {
         $id = $this->route('album')->id;
         return [
+            'user_ulid' => 'exists:users,ulid',
             'name' => 'required|unique:albums,name,'.$id.',id',
             'description' => 'required',
+            'image' => 'url|ends_with:jpg,jpeg,png',
         ];
     }
 }

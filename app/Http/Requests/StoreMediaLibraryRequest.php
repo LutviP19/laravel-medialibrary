@@ -11,7 +11,7 @@ class StoreMediaLibraryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->tokenCan("create");
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreMediaLibraryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_ulid' => 'exists:users,ulid',
+            'album_id' => 'exists:albums,id',
+            'name' => 'required|unique:media_libraries,name|max:255',            
+            'intro' => 'string',
+            'description' => 'string',
+            'image' => 'url|ends_with:jpg,jpeg,png',
         ];
     }
 }

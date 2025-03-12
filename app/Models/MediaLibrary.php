@@ -13,6 +13,10 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\MediaCollections\File;
+use Laravel\Scout\Engines\Engine;
+use Laravel\Scout\EngineManager;
+use Laravel\Scout\Searchable;
+
 
 class MediaLibrary extends Model implements HasMedia 
 {
@@ -21,8 +25,9 @@ class MediaLibrary extends Model implements HasMedia
     use HasUlids;
     use SoftDeletes;
     use InteractsWithMedia;
+    use Searchable;
 
-    /**
+     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
@@ -39,6 +44,8 @@ class MediaLibrary extends Model implements HasMedia
     protected $fillable = [
         'user_ulid',
         'album_id',
+        'url_path',
+        'dir_path',
         'name',
         'intro',
         'description',
@@ -56,11 +63,46 @@ class MediaLibrary extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('media-libraries')
-            ->acceptsMimeTypes(['image/*']);
+            ->acceptsMimeTypes(['image/jpg','image/jpeg','image/png']);
+    }
+
+    /**
+     * Get the engine used to index the model.
+     */
+    public function searchableUsing(): Engine
+    {
+        return app(EngineManager::class)->engine('meilisearch');
+    }
+
+    /**
+     * Get the name of the index associated with the model.
+     */
+    public function searchableAs(): string
+    {
+        return 'medias_index';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        $array = $this->toArray();
+ 
+        // Customize the data array...
+ 
+        return $array;
     }
 
     public function user(): HasOne
     {
         return $this->HasOne(User::class, 'ulid', 'user_ulid');
+    }
+
+    public function album(): HasOne
+    {
+        return $this->HasOne(Album::class, 'id', 'album_id');
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Illuminate\Auth\AuthenticationException;
@@ -47,15 +48,27 @@ return Application::configure(basePath: dirname(__DIR__))
         //     // }
         // });
 
-        $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
+        $exceptions->renderable(function (MethodNotAllowedHttpException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => 'Record not found.',
-                    'errors' => '404',
-                    //'exception' => $e->getMessage()
-                ], 404)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
+                    // 'errors' => '404',
+                    // 'message' => $e->getMessage(),
+                    'errors' => (string)$e->getStatusCode(),
+                    'exception' => $e->getMessage()
+                ], 405)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
             }
-        });
+        }); 
+
+        // $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
+        //     if ($request->is('api/*')) {
+        //         return response()->json([
+        //             'message' => 'Record not found.',
+        //             'errors' => '404',
+        //             //'exception' => $e->getMessage()
+        //         ], 404)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
+        //     }
+        // });
 
         //
         $exceptions->renderable(function (AuthenticationException $e, Request $request) {

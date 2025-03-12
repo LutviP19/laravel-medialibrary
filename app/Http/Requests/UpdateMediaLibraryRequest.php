@@ -11,7 +11,7 @@ class UpdateMediaLibraryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->tokenCan("update");
     }
 
     /**
@@ -21,8 +21,14 @@ class UpdateMediaLibraryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('medium')->id;
         return [
-            //
+            'user_ulid' => 'exists:users,ulid',
+            'album_id' => 'exists:albums,id',
+            'name' => 'required|unique:media_libraries,name,'.$id.',id',
+            'intro' => 'string',
+            'description' => 'string',
+            'image' => 'url|ends_with:jpg,jpeg,png',
         ];
     }
 }

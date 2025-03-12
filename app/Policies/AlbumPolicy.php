@@ -13,7 +13,8 @@ class AlbumPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->tokenCan("read");
+        return $user->tokenCan("read") 
+                && (bool)$user->status === true;
     }
 
     /**
@@ -21,7 +22,8 @@ class AlbumPolicy
      */
     public function view(User $user, Album $album): bool
     {
-        return $user->tokenCan("read");
+        return $user->tokenCan("read") 
+                && (bool)$user->status === true;
     }
 
     /**
@@ -29,7 +31,8 @@ class AlbumPolicy
      */
     public function create(User $user): bool
     {
-        return $user->tokenCan("create");
+        return $user->tokenCan("create") 
+                && (bool)$user->status === true;
     }
 
     /**
@@ -37,7 +40,9 @@ class AlbumPolicy
      */
     public function update(User $user, Album $album): bool
     {
-        return $user->tokenCan("update");
+        return $user->tokenCan("update") 
+                && (bool)$user->status === true
+                && $user->ulid === $album->user_ulid;
     }
 
     /**
@@ -45,7 +50,9 @@ class AlbumPolicy
      */
     public function delete(User $user, Album $album): bool
     {
-        return $user->tokenCan("delete");
+        return $user->tokenCan("delete") 
+                && (bool)$user->status === true
+                && $user->ulid === $album->user_ulid;
     }
 
     /**
@@ -53,14 +60,18 @@ class AlbumPolicy
      */
     public function restore(User $user, Album $album): bool
     {
-        return true;
+        return $user->tokenCan("delete") 
+                && (bool)$user->status === true
+                && $user->ulid === $album->user_ulid;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Album $album): bool
+    public function forceDelete(User $user, Album $albums): bool
     {
-        return true;
+        return $user->tokenCan("delete") 
+                && (bool)$user->status === true 
+                && $user->ulid === $album->user_ulid;
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('media_libraries', function (Blueprint $table) {
             $table->ulid('id')->unique();
             $table->foreignUlid('user_ulid')->nullable();
-            $table->foreignUlid('album_id')->constrained()->onDelete('cascade');
+            $table->foreignUlid('album_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('url_path')->nullable();
             $table->string('dir_path')->nullable();
             $table->string('name')->unique();

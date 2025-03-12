@@ -22,9 +22,10 @@ class StoreAlbumRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_ulid' => 'exists:users,ulid',
             'name' => 'required|unique:albums,name|max:255',
             'description' => 'required',
-            'image' => 'url',
+            'image' => 'url|ends_with:jpg,jpeg,png',
         ];
     }
 }

@@ -33,9 +33,18 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'ulid',
         'name',
         'email',
         'password',
+        'first_name',
+        'last_name',
+        'phone',
+        'address_line1',
+        'address_line2',
+        'city',
+        'default_url',
+        'status',
     ];
 
     /**
@@ -59,7 +68,7 @@ class User extends Authenticatable
         'profile_photo_url',
         'profile',
     ];
-
+    
     /**
      * Get the rooms for the user.
      *

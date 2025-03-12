@@ -24,27 +24,35 @@ class AlbumResource extends JsonResource
     public function toArray(Request $request): array
     {
         // Get Medias
-        $mediaCollections = 'albums';
-        $mediaItems = $this->getMedia($mediaCollections);
-        $image = isset($mediaItems[0]) ? $mediaItems[0]->getFullUrl() : null;
+        // $mediaCollections = 'albums';
+        // $mediaItems = $this->getMedia($mediaCollections);
+        // $image = isset($mediaItems[0]) ? $mediaItems[0]->getFullUrl() : null;
+
+        // Modifying Attribute Visibility
+        $owner_visible = ['ulid', 'status', 'current_team_id', 'profile_photo_url', 'default_url', 'name', 'first_name', 'last_name', 'email'];
 
         return [
             "id" => $this->id,
             "name" => $this->name,
             "description" => $this->description,
-            "image" => $image,
+            "url_path" => $this->url_path,
+            "dir_path" => $this->dir_path,
+            // "image" => $image,
             "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at,
+            // "updated_at" => $this->updated_at,
+            $this->mergeWhen($request->user()->tokenCan("read", $this->resource), [                        
+                'owner' => !empty($this->user) ? $this->user->setVisible($owner_visible)->toArray() : null,
+            ]),
             $this->mergeWhen(
               $this->withAuthorizations,
               function() use ($request) {
                 return [
-                "can" => [
-                    "read" => $request->user()->tokenCan("read", $this->resource),
-                    "create" => $request->user()->tokenCan("create", $this->resource),
-                    "update" => $request->user()->tokenCan("update", $this->resource),
-                    "delete" => $request->user()->tokenCan("delete", $this->resource)
-                  ]
+                    "can" => [
+                            "read" => $request->user()->tokenCan("read", $this->resource),
+                            "create" => $request->user()->tokenCan("create", $this->resource),
+                            "update" => $request->user()->tokenCan("update", $this->resource),
+                            "delete" => $request->user()->tokenCan("delete", $this->resource)
+                    ]
                 ];
               }
             ),

@@ -13,7 +13,8 @@ class MediaLibraryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->tokenCan("read") 
+                && (bool)$user->status === true;
     }
 
     /**
@@ -21,7 +22,8 @@ class MediaLibraryPolicy
      */
     public function view(User $user, MediaLibrary $mediaLibrary): bool
     {
-        return false;
+        return $user->tokenCan("read") 
+                && (bool)$user->status === true;
     }
 
     /**
@@ -29,7 +31,8 @@ class MediaLibraryPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->tokenCan("create") 
+                && (bool)$user->status === true;
     }
 
     /**
@@ -37,7 +40,9 @@ class MediaLibraryPolicy
      */
     public function update(User $user, MediaLibrary $mediaLibrary): bool
     {
-        return false;
+        return $user->tokenCan("update") 
+                && (bool)$user->status === true
+                && $user->ulid === $mediaLibrary->user_ulid;
     }
 
     /**
@@ -45,7 +50,9 @@ class MediaLibraryPolicy
      */
     public function delete(User $user, MediaLibrary $mediaLibrary): bool
     {
-        return false;
+        return $user->tokenCan("delete")
+                && (bool)$user->status === true
+                && $user->ulid === $mediaLibrary->user_ulid;
     }
 
     /**
@@ -53,7 +60,9 @@ class MediaLibraryPolicy
      */
     public function restore(User $user, MediaLibrary $mediaLibrary): bool
     {
-        return false;
+        return $user->tokenCan("delete")
+                && (bool)$user->status === true
+                && $user->ulid === $mediaLibrary->user_ulid;
     }
 
     /**
@@ -61,6 +70,8 @@ class MediaLibraryPolicy
      */
     public function forceDelete(User $user, MediaLibrary $mediaLibrary): bool
     {
-        return false;
+        return $user->tokenCan("delete")
+                && (bool)$user->status === true
+                && $user->ulid === $mediaLibrary->user_ulid;
     }
 }

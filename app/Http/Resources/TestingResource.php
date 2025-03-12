@@ -39,12 +39,12 @@ class TestingResource extends JsonResource
               $this->withAuthorizations,
               function() use ($request) {
                 return [
-                "can" => [
-                    "read" => $request->user()->tokenCan("read", $this->resource),
-                    "create" => $request->user()->tokenCan("create", $this->resource),
-                    "update" => $request->user()->tokenCan("update", $this->resource),
-                    "delete" => $request->user()->tokenCan("delete", $this->resource)
-                  ]
+                    "can" => [
+                        "read" => $request->user()->tokenCan("read", $this->resource),
+                        "create" => $request->user()->tokenCan("create", $this->resource),
+                        "update" => $request->user()->tokenCan("update", $this->resource),
+                        "delete" => $request->user()->tokenCan("delete", $this->resource)
+                    ]
                 ];
               }
             ),

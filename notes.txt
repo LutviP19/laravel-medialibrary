@@ -51,8 +51,23 @@ Command:
 php artisan app:rabbitmq-producer-command "Testing message"
 php artisan app:rabbitmq-consumer-command
 
+
+Sync Search Engine:
+-------------------
 php artisan scout:sync-index-settings
+
+Models:
+-------
 php artisan scout:import "App\Models\Testing"
+php artisan scout:import "App\Models\Album"
+php artisan scout:import "App\Models\MediaLibrary"
+
+
+Seeders :
+---------
+php artisan db:seed --class=AlbumSeeder
+php artisan db:seed --class=MediaLibrarySeeder
+
 
 // New User
 {
@@ -61,12 +76,35 @@ php artisan scout:import "App\Models\Testing"
     "device_name" : "mobile"
 }
 
-// New Data
+// New Testing Data
 {
     "name" : "Test data",
     "description" : "Description of test",
-    "image" : "http://localhost:4566/sample-bucket/image.jpg?AWSAccessKeyId=test&Signature=bO0naJ0IClTaTznV5cWNV5iqMe4%3D&Expires=1739254435"
+    "image": "http://127.0.0.1:8000/media/1/image.jpg"
 }
+
+// New Album Data
+{
+    "name" : "Test data",
+    "description" : "Description of test",
+    "image": "http://127.0.0.1:8000/media/1/image.jpg"
+}
+
+// New Media Library Data
+{
+    "album_id": "01jp4k7vhfwr3ekx4z3k1754kg",
+    "image": "http://127.0.0.1:8000/media/1/image.jpg",
+    "name": "Test data",
+    "intro": "Intro of test",
+    "description": "Description of test"
+}
+
+
+Testing:
+--------
+php artisan migrate --env=testing
+php artisan pest:test NewTest ==> prefix (Name)Test
+php artisan test --testsuite=Feature --stop-on-failure
 
 WSL:
 ---

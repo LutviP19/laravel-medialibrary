@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\TestingController;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\MediaLibraryController;
 
 Route::get('/user', function (Request $request) {
     return [
@@ -51,12 +52,18 @@ Route::middleware('auth:sanctum')->group(function () {
     // Album
     Route::post('/album/search', [AlbumController::class, 'search'])->name('album.search');
 
+    // Media
+    Route::post('/media/search', [MediaLibraryController::class, 'search'])->name('media.search');
+
     // Resource controller
     Route::apiResources([
         'testing' => TestingController::class,
     ]);
     Route::apiResources([
         'album' => AlbumController::class,
+    ]);
+    Route::apiResources([
+        'media' => MediaLibraryController::class,
     ]);
     
 });

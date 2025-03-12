@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Testing;
+use App\Models\Album;
+use App\Models\MediaLibrary;
 
 return [
 
@@ -147,6 +149,14 @@ return [
             // ],
             Testing::class => [
                 'filterableAttributes'=> ['id', 'name', 'description'],
+                'sortableAttributes' => ['updated_at'],
+            ],
+            Album::class => [
+                'filterableAttributes'=> ['id', 'name', 'description'],
+                'sortableAttributes' => ['updated_at'],
+            ],
+            MediaLibrary::class => [
+                'filterableAttributes'=> ['id', 'name', 'intro'],
                 'sortableAttributes' => ['updated_at'],
             ],
         ],

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAlbumRequest;
 use App\Http\Requests\UpdateAlbumRequest;
+use Illuminate\Http\Request;
 use App\Models\Album;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
@@ -12,7 +13,7 @@ use App\Http\Resources\AlbumCollection;
 
 class AlbumController extends Controller
 {
-    protected $collection = 'albums';
+    protected $mediaCollections = 'albums';
 
     public function search(Request $request)
     {
@@ -43,8 +44,8 @@ class AlbumController extends Controller
      */
     public function store(StoreAlbumRequest $request)
     {
-        //
-        Gate::authorize('create', Album::class);        
+        // dd((bool)auth()->user()->status);
+        Gate::authorize('create', Album::class);
 
         // Get Validated data
         $validated = $request->validated();
@@ -58,7 +59,19 @@ class AlbumController extends Controller
                 ->sanitizingFileName(function($fileName) {
                     return strtolower(str_replace(['#', '/', '\\', ' '], '-', $fileName));
                 })
-                ->toMediaCollection($this->collection);
+                ->toMediaCollection($this->mediaCollections);
+
+            // Get Media
+            $mediaItems = $album->getMedia($this->mediaCollections);
+            $url = isset($mediaItems[0]) ? $mediaItems[0]->getFullUrl() : null;
+            $url_path = isset($mediaItems[0]) ? $mediaItems[0]->getUrl() : null;
+            $dir_path = isset($mediaItems[0]) ? $mediaItems[0]->getPath() : null;
+
+            // Save path and user_ulid
+            $album->url_path = $url_path;
+            $album->dir_path = $dir_path;
+            $album->user_ulid = $request->user()->ulid;
+            $album->save();
         }
 
         return (new AlbumResource($album))->response();
@@ -95,7 +108,7 @@ class AlbumController extends Controller
             $id = $album->id;
             if($request->filled('image')) {
                 // Delete old media
-                $mediaItems = $album->getMedia($this->collection);
+                $mediaItems = $album->getMedia($this->mediaCollections);
                 if(isset($mediaItems[0])) {
                     $mediaItems[0]->delete();
                 }
@@ -108,7 +121,19 @@ class AlbumController extends Controller
                     ->sanitizingFileName(function($fileName) {
                         return strtolower(str_replace(['#', '/', '\\', ' '], '-', $fileName));
                     })
-                    ->toMediaCollection($this->collection);
+                    ->toMediaCollection($this->mediaCollections);
+
+                // Get Media
+                $mediaItems = $data->getMedia($this->mediaCollections);
+                $url = isset($mediaItems[0]) ? $mediaItems[0]->getFullUrl() : null;
+                $url_path = isset($mediaItems[0]) ? $mediaItems[0]->getUrl() : null;
+                $dir_path = isset($mediaItems[0]) ? $mediaItems[0]->getPath() : null;
+
+                // Save path and user_ulid
+                $data->url_path = $url_path;
+                $data->dir_path = $dir_path;
+                $data->user_ulid = auth()->user()->ulid;
+                $data->save();
                 
                 return new AlbumResource($data);
             }
@@ -128,11 +153,11 @@ class AlbumController extends Controller
      */
     public function destroy(Album $album)
     {
-        Gate::authorize('delete', $testing);
+        Gate::authorize('delete', $album);
 
         //
-        $title = $testing->name;
-        if($testing->delete()) {
+        $title = $album->name;
+        if($album->delete()) {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Record ['.$title.'] has been deleted'
