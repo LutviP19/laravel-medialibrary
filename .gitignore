@@ -7,6 +7,9 @@
 /storage/*.key
 /storage/pail
 /vendor
+docker-compose/redis/redis
+docker-compose/mailpit/data
+docker-compose/LocalStack/volume
 .env
 .env.backup
 .env.production
@@ -22,10 +25,3 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-docker-compose/redis/redis/*
-docker-compose/mailpit/data/*
-docker-compose/mailpit/data/mailpit.db-shm
-docker-compose/redis/redis/dump.rdb
-docker-compose/LocalStack/volume/cache/server.test.pem
-docker-compose/LocalStack/volume/cache/server.test.pem.crt
-docker-compose/LocalStack/volume/cache/server.test.pem.key
