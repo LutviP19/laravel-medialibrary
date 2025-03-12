@@ -5,6 +5,8 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
+use App\Http\Middleware\EnsureIpIsValid;
+use App\Http\Middleware\EnsureHeaderIsValid;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,6 +20,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 //use Throwable;
 use Illuminate\Support\Facades\Log;
 
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -28,11 +31,40 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+        $middleware->use([
+            \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
+            \Illuminate\Http\Middleware\TrustHosts::class, // New Added
+            \Illuminate\Http\Middleware\TrustProxies::class,
+            \Illuminate\Http\Middleware\HandleCors::class,
+            \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
+            \Illuminate\Http\Middleware\ValidatePostSize::class,
+            \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
+            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        ]);
         $middleware->statefulApi();
         $middleware->alias([
             'abilities' => CheckAbilities::class,
             'ability' => CheckForAnyAbility::class,
         ]);
+
+        // Trust Proxy Check
+        $middleware->trustProxies(at: [
+            '192.168.1.1',
+            '10.0.0.0/8',
+        ]);
+        // $middleware->trustProxies(headers: Request::HEADER_X_FORWARDED_FOR |
+        //     Request::HEADER_X_FORWARDED_HOST |
+        //     Request::HEADER_X_FORWARDED_PORT |
+        //     Request::HEADER_X_FORWARDED_PROTO |
+        //     Request::HEADER_X_FORWARDED_AWS_ELB
+        // );
+
+        // Trust Host Check
+        $middleware->trustHosts(at: fn () => config('api-config.trusted_hosts'));
+
+        // Append Customs Middleware
+        $middleware->append(EnsureIpIsValid::class);
+        $middleware->append(EnsureHeaderIsValid::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
@@ -60,15 +92,15 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         }); 
 
-        // $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
-        //     if ($request->is('api/*')) {
-        //         return response()->json([
-        //             'message' => 'Record not found.',
-        //             'errors' => '404',
-        //             //'exception' => $e->getMessage()
-        //         ], 404)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
-        //     }
-        // });
+        $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Record not found.',
+                    'errors' => '404',
+                    //'exception' => $e->getMessage()
+                ], 404)->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
+            }
+        });
 
         //
         $exceptions->renderable(function (AuthenticationException $e, Request $request) {

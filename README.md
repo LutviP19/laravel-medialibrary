@@ -59,6 +59,13 @@ php artisan migrate
 npm run dev
 ```
 
+Run via composer (recomended):
+
+```bash
+composer run dev
+```
+OR
+
 Run artisan server (recomended):
 
 ```bash
@@ -84,7 +91,7 @@ Run with docker:
 
 #### Compose docker container (REQUIRED):
 
-This step is required to support realtime apps, all docker-compose.yml is located on docker-compose directory:
+This step is required to running third party services in docker container, all docker-compose.yml is located on docker-compose directory:
 
 ```bash
 cd docker-compose
@@ -132,6 +139,8 @@ php artisan queue:listen
 #### Run seeder (OPTIONAL):
 ```bash
 php artisan db:seed --class=TestingSeeder
+php artisan db:seed --class=AlbumSeeder
+php artisan db:seed --class=MediaLibrarySeeder
 ```
 
 #### Linking storage (REQUIRED):
@@ -143,11 +152,14 @@ php artisan storage:link
 ```bash
 php artisan scout:sync-index-settings
 php artisan scout:import "App\Models\Testing"
+php artisan scout:import "App\Models\Album"
+php artisan scout:import "App\Models\MediaLibrary"
 ```
 
 ### Run test:
 
 ```bash
+php artisan migrate --env=testing
 php artisan test > test-results.txt
 ```
 open test-results.txt to view the results
@@ -159,22 +171,91 @@ View on browser [http://127.0.0.1:8000](http://127.0.0.1:8000), register new use
 ### Dashboard:
 
 Jetstream dashboard [http://127.0.0.1:8000/dashboard](http://127.0.0.1:8000/dashboard)
+
 Filament dashboard  [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+
 Pulse dashboard [http://127.0.0.1:8000/pulse](http://127.0.0.1:8000/pulse)
+
 Telescope dashboard [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
 
 ### API:
-API Resource Testing [http://127.0.0.1:8000/api/testing](http://127.0.0.1:8000/api/testing)
+API Resources:
+
+Testing [http://127.0.0.1:8000/api/testing](http://127.0.0.1:8000/api/testing)
+
+Album [http://127.0.0.1:8000/api/album](http://127.0.0.1:8000/api/album)
+
+Media [http://127.0.0.1:8000/api/media](http://127.0.0.1:8000/api/media)
+
+
+Required Set Custom Header (must equals as env value):
+```json
+Key = env.APP_HEADER_CUSTOM_KEY
+Value = env.APP_HEADER_CUSTOM_VALUE
+```
+
+Required Bearer Token (must equals as generated token):
+
+Create token from profile dropdown menu "API Tokens"
+
+
+Sample search data (http://127.0.0.1:8000/api/album/search).
+```json
+// Body - form-data, method: POST
+// route : api/testing/search
+// Key: q, Value: any text
+q : a
+```
 
 Sample insert | update data.
 ```json
-// Sample Data
+// New User
+{
+    "email" : "admin@example.com",
+    "password" : "password123",
+    "device_name" : "mobile"
+}
+
+// New Testing Data
 {
     "name" : "Test data",
     "description" : "Description of test",
     "image": "http://127.0.0.1:8000/media/1/image.jpg"
 }
+
+// New Album Data
+{
+    "name" : "Test data",
+    "description" : "Description of test",
+    "image": "http://127.0.0.1:8000/media/1/image.jpg"
+}
+
+// New Media Library Data
+{
+    "album_id": "01jp4k7vhfwr3ekx4z3k1754kg",
+    "image": "http://127.0.0.1:8000/media/1/image.jpg",
+    "name": "Test data",
+    "intro": "Intro of test",
+    "description": "Description of test"
+}
+
 ```
+
+Sample Errors Response.
+```json
+// Invalid Header or IP address not listed
+{
+    "message": "Access Denied!",
+    "errors": "403"
+}
+
+// Invalid Route or Requested Id
+{
+    "message": "Record not found.",
+    "errors": "404"
+}
+```
+
 
 ## License
 

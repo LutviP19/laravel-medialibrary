@@ -137,4 +137,6 @@ TODO:
 - Push Notification
 - Octane Server
 - ULID with Soft Delete
-- Media Library Apps
+- Media Library API
+- Custom Middleware
+- Fillament Resources

@@ -6,6 +6,7 @@ services:
   # https://docs.meilisearch.com/learn/cookbooks/docker.html#download-meilisearch-with-docker
   meilisearch:
     image: getmeili/meilisearch:v1.12
+    restart: unless-stopped
     volumes:
       - ./data.ms:/data.ms
     ports:
