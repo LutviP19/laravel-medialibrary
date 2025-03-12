@@ -189,7 +189,7 @@ Media [http://127.0.0.1:8000/api/media](http://127.0.0.1:8000/api/media)
 
 
 Required Set Custom Header (must equals as env value):
-```json
+```text
 Key = env.APP_HEADER_CUSTOM_KEY
 Value = env.APP_HEADER_CUSTOM_VALUE
 ```
@@ -200,7 +200,7 @@ Create token from profile dropdown menu "API Tokens"
 
 
 Sample search data (http://127.0.0.1:8000/api/album/search).
-```json
+```text
 // Body - form-data, method: POST
 // route : api/testing/search
 // Key: q, Value: any text
@@ -208,7 +208,7 @@ q : a
 ```
 
 Sample insert | update data.
-```json
+```text
 // New User
 {
     "email" : "admin@example.com",
@@ -242,7 +242,7 @@ Sample insert | update data.
 ```
 
 Sample Errors Response.
-```json
+```text
 // Invalid Header or IP address not listed
 {
     "message": "Access Denied!",
