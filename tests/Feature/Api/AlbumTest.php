@@ -15,7 +15,10 @@ test('task search album can be retrieved', function () {
 
     Album::factory(10)->create();
  
-    $response = $this->json('post', '/api/album/search', ['q' => 'a'])->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('post', '/api/album/search', ['q' => 'a'])->assertStatus(200);
  
     $response->assertOk();
 
@@ -32,7 +35,10 @@ test('task list album can be retrieved', function () {
 
     Album::factory(1)->create();
  
-    $response = $this->get('/api/album');
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->get('/api/album');
  
     $response->assertOk();
 
@@ -49,7 +55,10 @@ test('task list album can be show', function () {
  
     $album = Album::factory(1)->create();
     $album_id = $album[0]->id;
-    $response = $this->get('/api/album/'.$album_id);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->get('/api/album/'.$album_id);
  
     $response->assertOk();
 
@@ -67,7 +76,10 @@ test('task data album can be created', function () {
     // $album = Album::factory(1)->create();
     // $album_id = $album[0]->id;
     $name = 'Album-'.rand(99,1000);
-    $response = $this->json('post', '/api/album', ['name' => $name, 'description' => 'Album description'])->assertStatus(201);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('post', '/api/album', ['name' => $name, 'description' => 'Album description'])->assertStatus(201);
 
     // Assert response data
     $response->assertJsonStructure(['data' => ['id', 'name', 'description']]);
@@ -83,7 +95,10 @@ test('task data album can be updated', function () {
     $album = Album::factory(1)->create();
     $album_id = $album[0]->id;
     $name = $album[0]->name;
-    $response = $this->json('patch', '/api/album/'.$album_id, ['name' => $name, 'description' => 'Album description'])->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('patch', '/api/album/'.$album_id, ['name' => $name, 'description' => 'Album description'])->assertStatus(200);
 
     // Assert response data
     $response->assertJson(fn (AssertableJson $json) =>
@@ -100,7 +115,10 @@ test('task data album can be deleted', function () {
  
     $album = Album::factory(1)->create();
     $album_id = $album[0]->id;
-    $response = $this->json('delete', '/api/album/'.$album_id)->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('delete', '/api/album/'.$album_id)->assertStatus(200);
 
     // Assert response data
     $response->assertJson(['status' => 'success']);

@@ -67,7 +67,7 @@ class TestingController extends Controller
 
     public function search(Request $request)
     {
-        // Gate::authorize('viewAny', Testing::class);
+        Gate::authorize('viewAny', Testing::class);
 
         // Search
         $data = Testing::search($request->q)->get();

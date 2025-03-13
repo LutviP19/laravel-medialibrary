@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Jobs\ProcessRabbitMQMessage;
 use App\Livewire\Pages\Chats;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\AppStatusController;
+
+// Server status
+Route::get('/status', AppStatusController::class);
 
 Route::get('/', function () {
     return view('welcome');

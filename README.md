@@ -178,6 +178,11 @@ Pulse dashboard [http://127.0.0.1:8000/pulse](http://127.0.0.1:8000/pulse)
 
 Telescope dashboard [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
 
+### Status Server:
+Web : [http://127.0.0.1:8000/status](http://127.0.0.1:8000/status)
+
+API : [http://127.0.0.1:8000/api/status](http://127.0.0.1:8000/api/status)
+
 ### API:
 API Resources:
 
@@ -199,16 +204,18 @@ Required Bearer Token (must equals as generated token):
 Create token from profile dropdown menu "API Tokens"
 
 
-Sample search data (http://127.0.0.1:8000/api/album/search).
+Sample search data ([http://127.0.0.1:8000/api/testing/search]).
+
+Note: Sync Scout data to serach engine(meilisearch) before hit.
 ```text
 // Body - form-data, method: POST
-// route : api/testing/search
+// route : api/testing/search | api/album/search | api/media/search
 // Key: q, Value: any text
 q : a
 ```
 
 Sample insert | update data.
-```text
+```json
 // New User
 {
     "email" : "admin@example.com",
@@ -242,17 +249,58 @@ Sample insert | update data.
 ```
 
 Sample Errors Response.
-```text
-// Invalid Header or IP address not listed
+```json
+// Invalid Custom Header
 {
     "message": "Access Denied!",
-    "errors": "403"
+    "statusCode": 403,
+    "errors": "Invalid request."
+}
+
+// Invalid Auth
+{
+    "message": "Forbidden.",
+    "statusCode": 403,
+    "errors": "Unauthenticated."
+}
+
+// Access Denied - Invalid Policy
+{
+    "message": "Not accessable.",
+    "statusCode": 403,
+    "errors": "This action is unauthorized."
 }
 
 // Invalid Route or Requested Id
 {
     "message": "Record not found.",
-    "errors": "404"
+    "statusCode": 404,
+    "errors": "Not found."
+}
+```
+
+Sample Successfull Response.
+```json
+{
+    "data": {
+        "id": 1,
+        "name": "LutviP 19",
+        "description": "Rem possimus consequatur ut fuga. Mollitia impedit ad vel esse eius sint.",
+        "image": "http://localhost:8000/storage/7/image.jpg",
+        "created_at": "2025-03-11T06:49:14.000000Z",
+        "updated_at": "2025-03-11T06:49:14.000000Z",
+        "can": {
+            "read": true,
+            "create": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "meta": {
+        "app": "Laravel",
+        "version": "1.0.0",
+        "meta-key": "meta-value"
+    }
 }
 ```
 

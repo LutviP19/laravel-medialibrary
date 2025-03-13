@@ -28,7 +28,8 @@ class EnsureHeaderIsValid
 
             return response()->json([
                 'message' => 'Access Denied!',
-                'errors' => '403'
+                'statusCode' => 403,
+                'errors' => 'Invalid request.',
             ], 403);
         }
 

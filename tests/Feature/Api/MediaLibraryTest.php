@@ -16,7 +16,10 @@ test('task search media can be retrieved', function () {
 
     MediaLibrary::factory(10)->create();
  
-    $response = $this->json('post', '/api/media/search', ['q' => 'a'])->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('post', '/api/media/search', ['q' => 'a'])->assertStatus(200);
  
     $response->assertOk();
 
@@ -33,7 +36,10 @@ test('task list media can be retrieved', function () {
 
     MediaLibrary::factory(1)->create();
  
-    $response = $this->get('/api/media');
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->get('/api/media');
  
     $response->assertOk();
 
@@ -50,7 +56,10 @@ test('task list media can be show', function () {
  
     $media = MediaLibrary::factory(1)->create();
     $media_id = $media[0]->id;
-    $response = $this->get('/api/media/'.$media_id);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->get('/api/media/'.$media_id);
  
     $response->assertOk();
 
@@ -69,7 +78,10 @@ test('task data media can be created', function () {
     $album_id = $album[0]->id;
     
     $name = 'MediaLibrary-'.rand(99,1000);
-    $response = $this->json('post', '/api/media', ['album_id' => $album_id, 'name' => $name, 'description' => 'MediaLibrary description'])->assertStatus(201);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('post', '/api/media', ['album_id' => $album_id, 'name' => $name, 'description' => 'MediaLibrary description'])->assertStatus(201);
 
     // Assert response data
     $response->assertJsonStructure(['data' => ['id', 'name', 'description']]);
@@ -88,7 +100,10 @@ test('task data media can be updated', function () {
     $media = MediaLibrary::factory(1)->create();
     $media_id = $media[0]->id;
     $name = $media[0]->name;
-    $response = $this->json('patch', '/api/media/'.$media_id, ['album_id' => $album_id, 'name' => $name, 'description' => 'MediaLibrary description'])->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('patch', '/api/media/'.$media_id, ['album_id' => $album_id, 'name' => $name, 'description' => 'MediaLibrary description'])->assertStatus(200);
 
     // Assert response data
     $response->assertJson(fn (AssertableJson $json) =>
@@ -105,7 +120,10 @@ test('task data media can be deleted', function () {
  
     $media = MediaLibrary::factory(1)->create();
     $media_id = $media[0]->id;
-    $response = $this->json('delete', '/api/media/'.$media_id)->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('delete', '/api/media/'.$media_id)->assertStatus(200);
 
     // Assert response data
     $response->assertJson(['status' => 'success']);

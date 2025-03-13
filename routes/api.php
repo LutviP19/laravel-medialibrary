@@ -4,9 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Http\Controllers\AppStatusController;
 use App\Http\Controllers\TestingController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\MediaLibraryController;
+
+
+// Server status
+Route::get('/status', AppStatusController::class);
 
 Route::get('/user', function (Request $request) {
     return [

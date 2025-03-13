@@ -7,12 +7,6 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithFaker;
 
-test('example', function () {
-    $response = $this->get('/');
-
-    $response->assertStatus(200);
-});
-
 test('task test can be retrieved', function () {
     Sanctum::actingAs(
         User::factory()->create(),
@@ -21,7 +15,10 @@ test('task test can be retrieved', function () {
 
     Testing::factory(1)->create();
  
-    $response = $this->get('/api/testing/test');
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->get('/api/testing/test');
  
     $response->assertOk();
 
@@ -37,7 +34,10 @@ test('task search can be retrieved', function () {
 
     Testing::factory(10)->create();
  
-    $response = $this->json('post', '/api/testing/search', ['q' => 'a'])->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('post', '/api/testing/search', ['q' => 'a'])->assertStatus(200);
  
     $response->assertOk();
 
@@ -54,7 +54,10 @@ test('task list can be retrieved', function () {
 
     Testing::factory(1)->create();
  
-    $response = $this->get('/api/testing');
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->get('/api/testing');
  
     $response->assertOk();
 
@@ -71,7 +74,10 @@ test('task list can be show', function () {
  
     $testing = Testing::factory(1)->create();
     $testing_id = $testing[0]->id;
-    $response = $this->get('/api/testing/'.$testing_id);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->get('/api/testing/'.$testing_id);
  
     $response->assertOk();
 
@@ -89,7 +95,10 @@ test('task data can be created', function () {
     // $testing = Testing::factory(1)->create();
     // $testing_id = $testing[0]->id;
     $name = 'Testing-'.rand(99,1000);
-    $response = $this->json('post', '/api/testing', ['name' => $name, 'description' => 'Testing description'])->assertStatus(201);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('post', '/api/testing', ['name' => $name, 'description' => 'Testing description'])->assertStatus(201);
 
     // Assert response data
     $response->assertJsonStructure(['data' => ['id', 'name', 'description']]);
@@ -105,7 +114,10 @@ test('task data can be updated', function () {
     $testing = Testing::factory(1)->create();
     $testing_id = $testing[0]->id;
     $name = $testing[0]->name;
-    $response = $this->json('patch', '/api/testing/'.$testing_id, ['name' => $name, 'description' => 'Testing description'])->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('patch', '/api/testing/'.$testing_id, ['name' => $name, 'description' => 'Testing description'])->assertStatus(200);
 
     // Assert response data
     $response->assertJson(fn (AssertableJson $json) =>
@@ -122,7 +134,10 @@ test('task data can be deleted', function () {
  
     $testing = Testing::factory(1)->create();
     $testing_id = $testing[0]->id;
-    $response = $this->json('delete', '/api/testing/'.$testing_id)->assertStatus(200);
+    $response = $this->withHeaders([
+                    env('APP_HEADER_CUSTOM_KEY') => env('APP_HEADER_CUSTOM_VALUE'),
+                ])
+                ->json('delete', '/api/testing/'.$testing_id)->assertStatus(200);
 
     // Assert response data
     $response->assertJson(['status' => 'success']);
