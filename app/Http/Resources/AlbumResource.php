@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\MediaLibraryResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,6 +32,9 @@ class AlbumResource extends JsonResource
 
         // Modifying Attribute Visibility
         $owner_visible = ['ulid', 'status', 'current_team_id', 'profile_photo_url', 'default_url', 'name', 'first_name', 'last_name', 'email'];
+        $media_visible = ['id', 'user_ulid', 'album_id', 'url_path', 'name', 'intro'];
+
+        // dd($this->resource);
 
         return [
             "id" => $this->id,
@@ -40,21 +45,24 @@ class AlbumResource extends JsonResource
             // "image" => $image,
             "created_at" => $this->created_at,
             // "updated_at" => $this->updated_at,
-            $this->mergeWhen($request->user()->tokenCan("read", $this->resource), [                        
-                'owner' => !empty($this->user) ? $this->user->setVisible($owner_visible)->toArray() : null,
+            $this->mergeWhen($request->user()->tokenCan("read", $this->resource), [
+                // 'owner' => !empty($this->owner) ? $this->owner->setVisible($owner_visible)->toArray() : null,
+                // 'medias' => !empty($this->medias) ? $this->medias->setVisible($media_visible)->toArray() : null,
+
+                'owner' =>  UserResource::collection($this->whenLoaded('owner')),
+                'medias' => MediaLibraryResource::collection($this->whenLoaded('medias')),
             ]),
-            $this->mergeWhen(
-              $this->withAuthorizations,
-              function() use ($request) {
-                return [
-                    "can" => [
+            $this->mergeWhen($this->withAuthorizations,
+                function() use ($request) {
+                    return [
+                        "can" => [
                             "read" => $request->user()->tokenCan("read", $this->resource),
                             "create" => $request->user()->tokenCan("create", $this->resource),
                             "update" => $request->user()->tokenCan("update", $this->resource),
                             "delete" => $request->user()->tokenCan("delete", $this->resource)
-                    ]
-                ];
-              }
+                        ]
+                    ];
+                }
             ),
         ];
     }

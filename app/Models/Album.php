@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\hasOne;
 use Illuminate\Database\Eloquent\Relations\hasMany;
-// use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Enums\Fit;
@@ -94,12 +94,12 @@ class Album extends Model implements HasMedia
         return $array;
     }
 
-    public function user(): HasOne
+    public function owner(): hasMany
     {
-        return $this->HasOne(User::class, 'ulid', 'user_ulid');
+        return $this->hasMany(User::class, 'ulid', 'user_ulid');
     }
 
-    public function media_libraries(): hasMany
+    public function medias(): hasMany
     {
         return $this->hasMany(MediaLibrary::class, 'album_id', 'id');
     }

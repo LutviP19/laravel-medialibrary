@@ -42,8 +42,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         ]);
 
-        $middleware->authenticateSessions();
+        
         $middleware->statefulApi();
+
+        // Middleware Aliases
         $middleware->alias([
             'abilities' => CheckAbilities::class,
             'ability' => CheckForAnyAbility::class,
@@ -69,11 +71,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(EnsureIpIsValid::class);
         $middleware->append(EnsureHeaderIsValid::class);
 
-        // Middleware Aliases
-        $middleware->alias([
-            // 'subscribed' => EnsureUserIsSubscribed::class
-        ]);
-
         // Allow Request under Maintenance Mode
         $middleware->preventRequestsDuringMaintenance(except: [
             // 'stripe/*',
@@ -95,6 +92,18 @@ return Application::configure(basePath: dirname(__DIR__))
         //     // }
         // });
 
+        // MethodNotAllowedHttpException
+        $exceptions->renderable(function (MethodNotAllowedHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Invalid method.',
+                    'statusCode' => $e->getStatusCode(),
+                    'errors' => $e->getMessage(),
+                    // 'exception' => "MethodNotAllowedHttpException file: ". $e->getFile() ." line: ". $e->getLine()
+                ], $e->getStatusCode())->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
+            }
+        }); 
+
         // NotFoundHttpException
         $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
             if ($request->is('api/*')) {
@@ -107,23 +116,11 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
 
-        // MethodNotAllowedHttpException
-        $exceptions->renderable(function (MethodNotAllowedHttpException $e, Request $request) {
-            if ($request->is('api/*')) {
-                return response()->json([
-                    'message' => 'Invalid method.',
-                    'statusCode' => $e->getStatusCode(),
-                    'errors' => $e->getMessage(),
-                    // 'exception' => "MethodNotAllowedHttpException file: ". $e->getFile() ." line: ". $e->getLine()
-                ], $e->getStatusCode())->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
-            }
-        });
-
         // AuthenticationException
         $exceptions->renderable(function (AuthenticationException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Forbidden.',
+                    'message' => 'Forbi',
                     'statusCode' => 403,
                     'errors' => $e->getMessage(),
                     // 'exception' => "AuthenticationException file: ". $e->getFile() ." line: ". $e->getLine()
@@ -156,6 +153,8 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })
     ->booted(function (Application $app) {
-        
+        // \Illuminate\Foundation\Configuration\Middleware::trustProxies(at: [
+        //     config('api-config.trusted_proxies')
+        // ]);
     })
     ->create();

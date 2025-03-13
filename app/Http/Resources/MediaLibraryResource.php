@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\AlbumResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -43,22 +45,25 @@ class MediaLibraryResource extends JsonResource
             // "image" => $image,
             "created_at" => $this->created_at,
             // "updated_at" => $this->updated_at,
+
             $this->mergeWhen($request->user()->tokenCan("read", $this->resource), [
-                'owner' => !empty($this->user) ? $this->user->setVisible($owner_visible)->toArray() : null,
-                'album' => !empty($this->album) ? $this->album->setVisible($album_visible)->toArray() : null,
+                // 'owner' => !empty($this->user) ? $this->user->setVisible($owner_visible)->toArray() : null,
+                // 'album' => !empty($this->album) ? $this->album->setVisible($album_visible)->toArray() : null,
+
+                'owner' => UserResource::collection($this->whenLoaded('owner')),
+                'album' => AlbumResource::collection($this->whenLoaded('album')),
             ]),
-            $this->mergeWhen(
-              $this->withAuthorizations,
-              function() use ($request) {
-                return [
+            $this->mergeWhen($this->withAuthorizations,
+                function() use ($request) {
+                    return [
                         "can" => [
                             "read" => $request->user()->tokenCan("read", $this->resource),
                             "create" => $request->user()->tokenCan("create", $this->resource),
                             "update" => $request->user()->tokenCan("update", $this->resource),
                             "delete" => $request->user()->tokenCan("delete", $this->resource)
                         ]
-                ];
-              }
+                    ];
+                }
             ),
         ];
     }

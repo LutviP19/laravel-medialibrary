@@ -85,7 +85,7 @@ class MediaLibraryController extends Controller
         Gate::authorize('view', $medium);
 
         // dd($medium->id);
-        $data = MediaLibrary::findOrFail($medium->id);
+        $data = MediaLibrary::with(['owner', 'album'])->findOrFail($medium->id);
 
         return (new MediaLibraryResource($data));
     }

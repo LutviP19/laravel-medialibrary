@@ -80,7 +80,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the rooms for the user.
+     * Get the albums for the user.
      *
      * @return HasMany<Album ,$this>
      */
@@ -90,7 +90,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the rooms for the user.
+     * Get the medias for the user.
      *
      * @return HasMany<MediaLibrary ,$this>
      */

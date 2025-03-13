@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\AlbumResource;
 use App\Http\Resources\AlbumCollection;
 
+use App\Models\User;
+use App\Http\Resources\UserResource;
+
 class AlbumController extends Controller
 {
     protected $mediaCollections = 'albums';
@@ -36,7 +39,7 @@ class AlbumController extends Controller
         //
         $data = Album::all();
 
-        return (new AlbumCollection($data));
+        return AlbumResource::collection($data);
     }
 
     /**
@@ -85,7 +88,7 @@ class AlbumController extends Controller
         Gate::authorize('view', $album);
 
         // 
-        $data = Album::findOrFail($album->id);
+        $data = Album::with(['owner', 'medias'])->findOrFail($album->id);
 
         return (new AlbumResource($data));
     }
