@@ -17,13 +17,14 @@ use App\Http\Resources\UserResource;
 class AlbumController extends Controller
 {
     protected $mediaCollections = 'albums';
+    protected $perPage = 15;
 
     public function search(Request $request)
     {
         Gate::authorize('viewAny', Album::class);
 
         // Search
-        $data = Album::search($request->q)->get();
+        $data = Album::search($request->q)->paginate($this->perPage);
 
         return (new AlbumCollection($data));
     }
@@ -37,7 +38,7 @@ class AlbumController extends Controller
         Gate::authorize('viewAny', Album::class);
 
         //
-        $data = Album::all();
+        $data = Album::paginate($this->perPage);
 
         return AlbumResource::collection($data);
     }
@@ -71,8 +72,8 @@ class AlbumController extends Controller
             $dir_path = isset($mediaItems[0]) ? $mediaItems[0]->getPath() : null;
 
             // Save path and user_ulid
-            $album->url_path = $url_path;
-            $album->dir_path = $dir_path;
+            $album->url_path = str_replace(env('APP_URL'), '', $url_path);
+            $album->dir_path = str_replace(storage_path(), '', $dir_path);
             $album->user_ulid = $request->user()->ulid;
             $album->save();
         }
@@ -133,8 +134,8 @@ class AlbumController extends Controller
                 $dir_path = isset($mediaItems[0]) ? $mediaItems[0]->getPath() : null;
 
                 // Save path and user_ulid
-                $data->url_path = $url_path;
-                $data->dir_path = $dir_path;
+                $data->url_path = str_replace(env('APP_URL'), '', $url_path);
+                $data->dir_path = str_replace(storage_path(), '', $dir_path);
                 $data->user_ulid = auth()->user()->ulid;
                 $data->save();
                 

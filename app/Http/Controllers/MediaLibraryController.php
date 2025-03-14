@@ -14,13 +14,14 @@ use App\Http\Resources\MediaLibraryCollection;
 class MediaLibraryController extends Controller
 {
     protected $mediaCollections = 'media-libraries';
+    protected $perPage = 15;
 
     public function search(Request $request)
     {
         Gate::authorize('viewAny', MediaLibrary::class);
 
         // Search
-        $data = MediaLibrary::search($request->q)->get();
+        $data = MediaLibrary::search($request->q)->paginate($this->perPage);
 
         return (new MediaLibraryCollection($data));
     }
@@ -34,7 +35,7 @@ class MediaLibraryController extends Controller
         Gate::authorize('viewAny', MediaLibrary::class);
 
         //
-        $data = MediaLibrary::all();
+        $data = MediaLibrary::paginate($this->perPage);
 
         return (new MediaLibraryCollection($data));
     }
@@ -68,8 +69,8 @@ class MediaLibraryController extends Controller
             $dir_path = isset($mediaItems[0]) ? $mediaItems[0]->getPath() : null;
 
             // Save path and user_ulid
-            $medium->url_path = $url_path;
-            $medium->dir_path = $dir_path;
+            $medium->url_path = str_replace(env('APP_URL'), '', $url_path);
+            $medium->dir_path = str_replace(storage_path(), '', $dir_path);
             $medium->user_ulid = $request->user()->ulid;
             $medium->save();
         }
@@ -130,8 +131,8 @@ class MediaLibraryController extends Controller
                 $dir_path = isset($mediaItems[0]) ? $mediaItems[0]->getPath() : null;
 
                 // Save path and user_ulid
-                $data->url_path = $url_path;
-                $data->dir_path = $dir_path;
+                $data->url_path = str_replace(env('APP_URL'), '', $url_path);
+                $data->dir_path = str_replace(storage_path(), '', $dir_path);
                 $data->user_ulid = auth()->user()->ulid;
                 $data->save();
                 
