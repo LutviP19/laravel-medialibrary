@@ -37,10 +37,11 @@ class AlbumController extends Controller
         //
         Gate::authorize('viewAny', Album::class);
 
-        //
-        $data = Album::paginate($this->perPage);
-
-        return AlbumResource::collection($data);
+        // Query Get data
+        // $data = Album::paginate($this->perPage); // N+1
+        $data = Album::with(['owner','medias'])->paginate($this->perPage); // with | withOnly
+        
+        return (new AlbumCollection($data));
     }
 
     /**

@@ -120,7 +120,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->renderable(function (AuthenticationException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Forbi',
+                    'message' => 'Forbidden',
                     'statusCode' => 403,
                     'errors' => $e->getMessage(),
                     // 'exception' => "AuthenticationException file: ". $e->getFile() ." line: ". $e->getLine()

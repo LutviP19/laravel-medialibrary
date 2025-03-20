@@ -34,8 +34,9 @@ class MediaLibraryController extends Controller
         //
         Gate::authorize('viewAny', MediaLibrary::class);
 
-        //
-        $data = MediaLibrary::paginate($this->perPage);
+        // Query Get data
+        // $data = MediaLibrary::paginate($this->perPage); // N+1
+        $data = MediaLibrary::with(['owner','album'])->paginate($this->perPage); // with | withOnly
 
         return (new MediaLibraryCollection($data));
     }
