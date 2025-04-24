@@ -27,6 +27,7 @@ Laravel 11 implementations for starter kit web application. Development must be 
 - Implement Laravel [Octane](https://laravel.com/docs/11.x/octane) as web server.
 - Implement Laravel [Sail](https://laravel.com/docs/11.x/sail).
 - Include monitoring dashboard [Laravel Pulse](https://laravel.com/docs/11.x/pulse) and [Laravel Telescope](https://laravel.com/docs/11.x/telescope).
+- Implement [encrypt|decrypt](https://laravel.com/docs/11.x/encryption) string on sesitive data.
 
 
 ## How to run

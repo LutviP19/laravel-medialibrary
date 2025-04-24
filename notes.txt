@@ -63,6 +63,15 @@ php artisan db:seed --class=AlbumSeeder
 php artisan db:seed --class=MediaLibrarySeeder
 
 
+Tinker :
+---------
+php artisan tinker
+
+// Encrypt String
+use Illuminate\Support\Facades\Crypt;
+$encrypted = Crypt::encryptString('custom');
+
+
 // New User
 {
     "email" : "admin@example.com",

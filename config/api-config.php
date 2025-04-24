@@ -4,6 +4,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Security Features
+    |--------------------------------------------------------------------------
+    |
+    | This values for tunning on/off security to access the system.
+    | value: true | false
+    |
+    */
+    'api_secure' => [
+        'encryption' => true, // true: implemented encrypt|decrypt string on sesitive data 
+        // 'host' => true, // will implemented on next version
+        // 'header' => true, // will implemented on next version
+        // 'meta' => true, // will implemented on next version
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Trusted Hosts
     |--------------------------------------------------------------------------
     |
