@@ -25,6 +25,15 @@ class AlbumResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // ======= DEMO Simple
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "description" => $this->description,
+        ]; 
+        // ======= END DEMO
+
+
         // Get Medias
         // $mediaCollections = 'albums';
         // $mediaItems = $this->getMedia($mediaCollections);
@@ -67,25 +76,17 @@ class AlbumResource extends JsonResource
         ];
     }
 
-    // Additional Meta & Header:
-    // -------------------------
-    /**
-     * Get additional data that should be returned with the resource array.
-     *
-     * @return array<string, mixed>
-     */
-    public function with(Request $request): array    
-    {
-        return [
-            'meta' => config('api-config.meta')
-        ];
-    }
-
-    /**
-     * Customize the outgoing response for the resource.
-     */
-    public function withResponse($request, $response): void
-    {
-        $response->header(config('api-config.header.header_custom_api.key'), config('api-config.header.header_custom_api.value'));
-    }
+    // // Additional Meta :
+    // // -----------------
+    // /**
+    //  * Get additional data that should be returned with the resource array.
+    //  *
+    //  * @return array<string, mixed>
+    //  */
+    // public function with(Request $request): array    
+    // {
+    //     return [
+    //         'meta' => config('api-config.meta')
+    //     ];
+    // }
 }
