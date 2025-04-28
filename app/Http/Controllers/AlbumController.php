@@ -44,9 +44,9 @@ class AlbumController extends Controller
         // $data = Album::with(['owner','medias'])->paginate($this->perPage); // with | withOnly
 
         // DEMO simple
-        $data = Album::simplePaginate($this->perPage); // simple
+        $data = Album::where('name', 'Album 1')->get(); // simple
         
-        // dd($data);        
+        // dd($data);
         return (new AlbumCollection($data));
     }
 

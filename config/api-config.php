@@ -7,15 +7,24 @@ return [
     | Security Features
     |--------------------------------------------------------------------------
     |
+    | ENCRYPTION_KEY
+    | custom_key : key for global custom encryption (shared)
+    | meta_key : key for custom meta encryption (dynamic)
+    | value for KEY : 16 alphanumeric string
+    |
+    | api_secure
     | This values for tunning on/off security to access the system.
-    | value: true | false
+    | value (boolean): true | false
     |
     */
+    'custom_key' => env('CUSTOM_ENCRYPTION_KEY', 'mycustomkey12345'), // Global key for custom encryption (shared)
+    'meta_key' => env('META_ENCRYPTION_KEY', 'valuecustom12345'), // Default dynamic meta key for custom encryption (dynamic)
+
     'api_secure' => [
-        'encryption' => true, // true: implemented encrypt|decrypt string on sesitive data 
-        // 'host' => true, // will implemented on next version
-        // 'header' => true, // will implemented on next version
-        // 'meta' => true, // will implemented on next version
+        'header' => env('API_SECURE_HEADER', false), // true: implemented of header key must exists
+        'meta' => env('API_SECURE_META', false), // true: implemented of meta key should exists on response
+        'encryption' => env('API_SECURE_ENCRYPTION', false), // true: implemented encrypt|decrypt string on sesitive data  
+        // 'host' => true, // will implemented on next session
     ],
 
     /*
@@ -50,11 +59,12 @@ return [
     | This value is the default meta value for the api.
     |
     */
-
+    'custom_meta' => [
+        env('APP_META_CUSTOM_KEY', 'key') => env('APP_META_CUSTOM_VALUE', 'value'),
+    ],
     'meta' => [
         'app' => env('APP_NAME', 'Laravel'),
         'version' => env('APP_VERSION', '1.0.0'),
-        env('APP_META_CUSTOM_KEY', 'key') => env('APP_META_CUSTOM_VALUE', 'value'),
     ],
 
     /*
