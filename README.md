@@ -6,7 +6,8 @@
 </p>
 
 ## Video
-<iframe width="560" height="315" src="https://www.youtube.com/embed/0ZUQy8vepns?si=i8wW2RUXSmAy7trH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Video](https://img.youtube.com/vi/0ZUQy8vepns/0.jpg)](https://youtu.be/0ZUQy8vepns)
+
 
 ## About
 
