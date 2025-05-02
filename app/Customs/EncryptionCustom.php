@@ -2,6 +2,7 @@
 
 namespace App\Customs;
 
+use Illuminate\Encryption\Encrypter as Encrypter;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class EncryptionCustom 
@@ -23,7 +24,7 @@ class EncryptionCustom
      */
     public static function encrypt($data, $key=null)
     {
-        return (new \Illuminate\Encryption\Encrypter($key ?: config('api-config.custom_key'), self::$chipper))
+        return (new Encrypter($key ?: config('api-config.custom_key'), self::$chipper))
                 ->encrypt($data, false);
     }
 
@@ -37,7 +38,7 @@ class EncryptionCustom
     public static function decrypt($encryptedData, $key=null)
     {
         try {
-            return (new \Illuminate\Encryption\Encrypter($key ?: config('api-config.custom_key'), self::$chipper))
+            return (new Encrypter($key ?: config('api-config.custom_key'), self::$chipper))
                     ->decrypt($encryptedData, false);
         } catch (DecryptException $e) {
             return;

@@ -5,6 +5,10 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Video
+[![Video](https://img.youtube.com/vi/0ZUQy8vepns/0.jpg)](https://youtu.be/0ZUQy8vepns)
+
+
 ## About
 
 Laravel 11 implementations for starter kit web application. Development must be an enjoyable and creative experience to be truly fulfilling. Laravel media library is takes the pain out of starter kit development used in web projects, in this project is implemented several features of Laravel framework, such as:

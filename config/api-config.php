@@ -10,7 +10,7 @@ return [
     | ENCRYPTION_KEY
     | custom_key : key for global custom encryption (shared)
     | meta_key : key for custom meta encryption (dynamic)
-    | value for KEY : 16 alphanumeric string
+    | value for KEY : 16 alphanumeric string Ex: Y6BszX0QyWDbporf
     |
     | api_secure
     | This values for tunning on/off security to access the system.
