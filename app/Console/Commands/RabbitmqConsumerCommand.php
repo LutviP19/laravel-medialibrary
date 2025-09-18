@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Illuminate\Support\Str;
+use App\Customs\EncryptionCustom;
 
 class RabbitmqConsumerCommand extends Command
 {
@@ -20,6 +22,8 @@ class RabbitmqConsumerCommand extends Command
      * @var string
      */
     protected $description = 'Command to consume RabbitMQ message';
+
+    protected $id;
 
     /**
      * Execute the console command.
@@ -38,11 +42,39 @@ class RabbitmqConsumerCommand extends Command
 
         $channel->queue_bind($queue_name, $queueName);
 
-        echo " [*] Waiting for messages. To exit press CTRL+C\n";
+        $this->id = rand(1,3);
+        echo " [*] Waiting for messages ID $this->id. To exit press CTRL+C\n";
 
+        // Consume body
         $callback = function ($msg) {
-            echo ' [x] ', $msg->getBody(), "\n";
-            \Log::info('RabbitMQ artisan message received: '.$msg->getBody());
+            $body = EncryptionCustom::decrypt($msg->getBody());
+
+            if(Str::isJson($body)) {
+                $data = json_decode($body, true);
+                $date = date('d-m-Y H:i:s');
+
+                echo ' [x] ', $date, "\n";
+                foreach($data as $key => $val){
+                    if(is_array($val)) {
+                        // Filtered ID
+                        if(isset($val['id']) && 
+                            $val['id'] === $this->id) {
+                            
+                            foreach($val as $k => $v) {                            
+                                echo "$k: $v\n";
+                            }
+                        }
+                    }
+                    else
+                        echo "$key: $val\n";
+                }
+                
+                echo "=====\n";
+            }
+            else {
+                echo ' [x] ', $body, "\n";
+                // \Log::info('RabbitMQ artisan message received: '.$msg->getBody());
+            }            
         };
 
         $channel->basic_consume($queue_name, '', false, true, false, false, $callback);

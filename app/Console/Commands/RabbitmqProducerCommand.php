@@ -7,6 +7,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use function Laravel\Prompts\text;
+use App\Customs\EncryptionCustom;
 
 class RabbitmqProducerCommand extends Command implements PromptsForMissingInput
 {
@@ -31,11 +32,19 @@ class RabbitmqProducerCommand extends Command implements PromptsForMissingInput
      */
     protected function promptForMissingArgumentsUsing(): array
     {
+        $data = [
+            ['id' => 1, 'title' => fake()->name(), 'contents' => fake()->text(100)],
+            ['id' => 2, 'title' => fake()->name(), 'contents' => fake()->text(100)],
+            ['id' => 3, 'title' => fake()->name(), 'contents' => fake()->text(100)],
+        ];
+
+        $default = 'Hello World';
+        $default = json_encode($data);
         return [
             'message' => fn () => text(
                 label: 'Type message want you send?',
                 placeholder: 'E.g. Hello World',
-                default: 'Hello World',
+                default: $default,
                 hint: 'This will be displayed on your profile.'
             ),
         ];
@@ -46,7 +55,7 @@ class RabbitmqProducerCommand extends Command implements PromptsForMissingInput
      */
     public function handle()
     {
-        $message = $this->argument('message');
+        $message = EncryptionCustom::encrypt($this->argument('message'));
 
         $connection = new AMQPStreamConnection(env('RABBITMQ_HOST'), env('RABBITMQ_PORT'), env('RABBITMQ_USER'), env('RABBITMQ_PASSWORD'));
         $channel = $connection->channel();
@@ -55,7 +64,7 @@ class RabbitmqProducerCommand extends Command implements PromptsForMissingInput
 
         $msg = new AMQPMessage($message);
         $channel->basic_publish($msg, env('RABBITMQ_QUEUE'));
-        echo ' [x] Sent: ', $message, "\n";
+        echo ' [x] Sent: ', EncryptionCustom::decrypt($message), "\n";
 
         $channel->close();
         $connection->close();
